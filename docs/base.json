@@ -1,0 +1,50 @@
+{
+	"items":[
+		{
+			"type":"Sotial",
+			"url":"https://sotial-one.com/",
+			"login":"sotial_login_one",
+			"password":"sotialpasone"
+		}, {
+			"type":"Sotial",
+			"url":"https://sotial-two.com/",
+			"login":"sotial_login_two",
+			"password":"sotialpastwo"
+		}, {
+			"type":"Sotial",
+			"url":"https://sotial-three.com/",
+			"login":"sotial_login_three",
+			"password":"sotialpasthree"
+		}, {
+			"type":"Video",
+			"url":"https://video-one.com/",
+			"login":"video_login_one",
+			"password":"videopasone"
+		}, {
+			"type":"Video",
+			"url":"https://video-two.com/",
+			"login":"video_login_two",
+			"password":"videopastwo"
+		}, {
+			"type":"Audio",
+			"url":"https://audio-one.com/",
+			"login":"audio_login_one",
+			"password":"audiopasone"
+		}, {
+			"type":"Audio",
+			"url":"https://audio-two.com/",
+			"login":"audio_login_two",
+			"password":"audiopastwo"
+		}, {
+			"type":"Audio",
+			"url":"https://audio-three.com/",
+			"login":"audio_login_three",
+			"password":"audiopasthree"
+		}, {
+			"type":"Audio",
+			"url":"https://audio-four.com/",
+			"login":"audio_login_four",
+			"password":"audiopasfour"
+		}
+	]
+}

@@ -1,0 +1,3 @@
+interface ILevel {
+    items:IBlock[];
+}
