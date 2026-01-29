@@ -1,5 +1,5 @@
 import Container = PIXI.Container;
-import {Graphics} from "pixi.js";
+import "pixi.js";
 import Storage_Window from "./Storage_Window";
 
 export default class Main_Container extends Container {
@@ -19,7 +19,6 @@ export default class Main_Container extends Container {
 	private jsonLoader():void {
 		Main_Container.JSON_LOADER = new XMLHttpRequest();
 		Main_Container.JSON_LOADER.responseType = "json";
-
 		Main_Container.JSON_LOADER.open("GET", "base.json", true);
 		Main_Container.JSON_LOADER.onreadystatechange = () => {
 			this._level = Main_Container.JSON_LOADER.response;
@@ -37,7 +36,6 @@ export default class Main_Container extends Container {
 		let storageWindowsHeight:number = 140;
 		let backgroundWidth:number;
 		let backgroundHeight:number;
-
 		for (let iterator:number = 0; iterator < this._level.items.length; iterator++) {
 			this.createStorageWindows(storageWindowsX, storageWindowsY, storageWindowsWidth, storageWindowsHeight);
 			console.log(storageWindowsX);
@@ -55,7 +53,6 @@ export default class Main_Container extends Container {
 	private createBackground(backgroundWidth:number, backgroundHeight:number):void {
 		let backgroundX:number = 0;
 		let backgroundY:number = 0;
-
 		let background:PIXI.Graphics = new PIXI.Graphics;
 		background
 			.beginFill(0xbdb6bf)
