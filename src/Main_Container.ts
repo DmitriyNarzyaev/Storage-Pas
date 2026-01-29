@@ -1,13 +1,13 @@
 import Container = PIXI.Container;
 import "pixi.js";
 import Storage_Window from "./Storage_Window";
+import Text_Window from "./Text_Window";
 
 export default class Main_Container extends Container {
 	public static readonly WINDOW_WIDTH:number = window.innerWidth;
 	public static readonly WINDOW_HEIGHT:number = window.innerHeight;
 	public static JSON_LOADER:XMLHttpRequest;
 	private _storageWindowsContainer:PIXI.Container;
-	private _storageWindow:Storage_Window;
 	private _level:ILevel;
 	private _gap:number = 10;
 
@@ -21,12 +21,16 @@ export default class Main_Container extends Container {
 		Main_Container.JSON_LOADER.responseType = "json";
 		Main_Container.JSON_LOADER.open("GET", "base.json", true);
 		Main_Container.JSON_LOADER.onreadystatechange = () => {
-			this._level = Main_Container.JSON_LOADER.response;
-			this._storageWindowsContainer = new PIXI.Container;
-			this.addChild(this._storageWindowsContainer);
-			this.createStorageWindowsGrid();
+			this.startAll();
 		};
 		Main_Container.JSON_LOADER.send();
+	}
+
+	private startAll():void {
+		this._level = Main_Container.JSON_LOADER.response;
+		this._storageWindowsContainer = new PIXI.Container;
+		this.addChild(this._storageWindowsContainer);
+		this.createStorageWindowsGrid();
 	}
 
 	private createStorageWindowsGrid():void {
@@ -37,8 +41,8 @@ export default class Main_Container extends Container {
 		let backgroundWidth:number;
 		let backgroundHeight:number;
 		for (let iterator:number = 0; iterator < this._level.items.length; iterator++) {
-			this.createStorageWindows(storageWindowsX, storageWindowsY, storageWindowsWidth, storageWindowsHeight);
-			console.log(storageWindowsX);
+			console.log(this._level.items.length)
+			this.createStorageWindow(storageWindowsX, storageWindowsY, storageWindowsWidth, storageWindowsHeight, iterator);
 			storageWindowsX += storageWindowsWidth + this._gap;
 			if (storageWindowsX >= Main_Container.WINDOW_WIDTH - storageWindowsWidth) {
 				backgroundWidth = storageWindowsX;
@@ -63,10 +67,23 @@ export default class Main_Container extends Container {
 		this._storageWindowsContainer.y = this._gap;
 	}
 
-	private createStorageWindows(windowX:number, windowY:number, windowWidth:number, windowHeight:number):void {
-		this._storageWindow = new Storage_Window(windowWidth, windowHeight);
-		this._storageWindow.x = windowX;
-		this._storageWindow.y = windowY;
-		this._storageWindowsContainer.addChild(this._storageWindow);
+	private createStorageWindow(windowX:number, windowY:number, windowWidth:number, windowHeight:number, numberOfWindow:number):void {
+		let storageWindow:Storage_Window;
+		storageWindow = new Storage_Window(windowWidth, windowHeight);
+		storageWindow.x = windowX;
+		storageWindow.y = windowY;
+		this._storageWindowsContainer.addChild(storageWindow);
+
+		const data:Record<string, any> = this._level.items[numberOfWindow];
+		const keys:string[] = Object.keys(data);
+		let textX:number = 10;
+		let textY:number = 10;
+		keys.forEach(key => {
+			let textForStorageWindow:Text_Window = new Text_Window(data[key]);
+			textForStorageWindow.x = textX;
+			textForStorageWindow.y = textY;
+			textY += 20;
+			storageWindow.addChild(textForStorageWindow);
+		});
 	}
 }
