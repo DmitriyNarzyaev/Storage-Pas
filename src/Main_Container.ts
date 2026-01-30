@@ -7,8 +7,8 @@ export default class Main_Container extends Container {
 	public static readonly WINDOW_WIDTH:number = window.innerWidth;
 	public static readonly WINDOW_HEIGHT:number = window.innerHeight;
 	public static JSON_LOADER:XMLHttpRequest;
-	private _storageWindowsContainer:PIXI.Container;
 	private _level:ILevel;
+	private _storageWindowsContainer:PIXI.Container;
 	private _gap:number = 10;
 
 	constructor() {
@@ -40,16 +40,18 @@ export default class Main_Container extends Container {
 		let storageWindowsHeight:number = 140;
 		let backgroundWidth:number;
 		let backgroundHeight:number;
-		for (let iterator:number = 0; iterator < this._level.items.length; iterator++) {
-			console.log(this._level.items.length)
-			this.createStorageWindow(storageWindowsX, storageWindowsY, storageWindowsWidth, storageWindowsHeight, iterator);
-			storageWindowsX += storageWindowsWidth + this._gap;
-			if (storageWindowsX >= Main_Container.WINDOW_WIDTH - storageWindowsWidth) {
-				backgroundWidth = storageWindowsX;
-				storageWindowsY += storageWindowsHeight + this._gap;
-				storageWindowsX = this._gap;
+		if (this._level != null) {
+			for (let iterator:number = 0; iterator < this._level.items.length; iterator++) {
+				this.createStorageWindow(storageWindowsX, storageWindowsY, storageWindowsWidth, storageWindowsHeight, iterator);
+				storageWindowsX += storageWindowsWidth + this._gap;
+				if (storageWindowsX >= Main_Container.WINDOW_WIDTH - storageWindowsWidth) {
+					backgroundWidth = storageWindowsX;
+					storageWindowsY += storageWindowsHeight + this._gap;
+					storageWindowsX = this._gap;
+				}
 			}
 		}
+
 		backgroundHeight = storageWindowsY + storageWindowsHeight + this._gap;
 		this.createBackground(backgroundWidth, backgroundHeight);
 	}
