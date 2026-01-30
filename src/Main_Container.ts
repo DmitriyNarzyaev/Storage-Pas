@@ -2,6 +2,7 @@ import Container = PIXI.Container;
 import "pixi.js";
 import Storage_Window from "./Storage_Window";
 import Text_Window from "./Text_Window";
+import Button from "./Button";
 
 export default class Main_Container extends Container {
 	public static readonly WINDOW_WIDTH:number = window.innerWidth;
@@ -84,8 +85,24 @@ export default class Main_Container extends Container {
 			let textForStorageWindow:Text_Window = new Text_Window(data[key]);
 			textForStorageWindow.x = textX;
 			textForStorageWindow.y = textY;
-			textY += 20;
+			textY += 22;
 			storageWindow.addChild(textForStorageWindow);
+
+			if (key === "login" || key === "password") {
+				let button:Button = new Button("copy", () => {this.copyCode(data[key] as string);});
+				storageWindow.addChild(button);
+				button.x = storageWindow.width - button.width - this._gap;
+				button.y = textY - this._gap * 1.8;
+			}
 		});
+	}
+
+	private copyCode(copyText:string):void {
+		navigator.clipboard.writeText(copyText).then(() => {
+			console.log("copyText: " + copyText);
+		})
+		.catch(error => {
+			console.error(`Текст не скопирован ${error}`);
+		})
 	}
 }
