@@ -3,13 +3,13 @@ import {TextStyle} from "pixi.js";
 
 export default class Text_Window extends Container {
 
-    constructor(textContent:string) {
+    constructor(textContent:string, color:number) {
         super();
 
         let textStyle:TextStyle = new PIXI.TextStyle ({
             fontFamily: 'times new roman',
             fontSize: 20,
-            fill: ['#000000'],
+            fill: [color],
             align: 'left'
         });
 

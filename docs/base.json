@@ -45,6 +45,11 @@
 			"url":"https://audio-four.com/",
 			"login":"audio_login_four",
 			"password":"audiopasfour"
+		}, {
+			"type":"TEST",
+			"url":"https://test-test-test-test-test-test-test-test-test.com/",
+			"login":"test-test-test-test-test-test-test-test-test",
+			"password":"test-test-test-test-test-test-test-test-test"
 		}
 	]
 }

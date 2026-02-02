@@ -77,21 +77,27 @@ export default class Main_Container extends Container {
 		storageWindow.y = windowY;
 		this._storageWindowsContainer.addChild(storageWindow);
 
-		const data:Record<string, any> = this._level.items[numberOfWindow];
+		const data:Record<string, any> = this._level.items[numberOfWindow];						//create text on storage
 		const keys:string[] = Object.keys(data);
 		let textX:number = 10;
 		let textY:number = 10;
+		let textColor:number;
 		keys.forEach(key => {
-			let textForStorageWindow:Text_Window = new Text_Window(data[key]);
+			if (key === "type") {
+				textColor = 0xaa4400;
+			} else {
+				textColor = 0x000000;
+			}
+			let textForStorageWindow:Text_Window = new Text_Window(data[key], textColor);
 			textForStorageWindow.x = textX;
 			textForStorageWindow.y = textY;
 			textY += 22;
 			storageWindow.addChild(textForStorageWindow);
 
-			if (key === "login" || key === "password") {
+			if (key === "login" || key === "password") {										//create buttons
 				let button:Button = new Button("copy", () => {this.copyCode(data[key] as string);});
 				storageWindow.addChild(button);
-				button.x = storageWindow.width - button.width - this._gap;
+				button.x = windowWidth - button.width - this._gap;
 				button.y = textY - this._gap * 1.8;
 			}
 		});
