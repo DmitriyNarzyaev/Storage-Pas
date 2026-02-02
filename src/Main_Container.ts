@@ -1,5 +1,6 @@
 import Container = PIXI.Container;
 import "pixi.js";
+import TextInput from "../node_modules/pixi-text-input";
 import Storage_Window from "./Storage_Window";
 import Text_Window from "./Text_Window";
 import Button from "./Button";
@@ -15,6 +16,24 @@ export default class Main_Container extends Container {
 	constructor() {
 		super();
 		this.jsonLoader();
+
+		let input = new TextInput({
+			input: {
+				fontSize: '25pt',
+				padding: '14px',
+				width: '500px',
+				color: '#26272E',
+			},
+			box: {
+				fill: 0xE8E9F3,
+				rounded: 16,
+				stroke: {
+					color: 0xCBCEE0,
+					width: 4
+				},
+			}
+		});
+		this.addChild(input);
 	}
 
 	private jsonLoader():void {
