@@ -2,23 +2,22 @@ import { TextStyle } from "pixi.js";
 import Container = PIXI.Container;
 
 export default class Button extends Container {
-    private _buttonWidth:number = 50;
     private readonly _callback:()=>void;
 
-    constructor(text:string, callback:()=>void = null) {
+    constructor(text:string, callback:()=>void = null, buttonWidth:number) {
         super();
         this._callback = callback;
-        this.initialButton(callback);
+        this.initialButton(callback, buttonWidth);
     }
 
-    private initialButton(callback:any):void {
+    private initialButton(callback:any, buttonWidth:number):void {
         const button:PIXI.Graphics = new PIXI.Graphics;
         button.buttonMode = true;
         button.interactive = true;
         button
             .beginFill(0xbdb6bf)
             .lineStyle(1, 0x997a8d)
-            .drawRect(0, 0, this._buttonWidth, 19);
+            .drawRect(0, 0, buttonWidth, 19);
         this.addChild(button);
 
         let textStyle:TextStyle = new PIXI.TextStyle ({

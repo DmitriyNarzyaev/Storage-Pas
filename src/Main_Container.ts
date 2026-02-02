@@ -82,20 +82,25 @@ export default class Main_Container extends Container {
 		let textX:number = 10;
 		let textY:number = 10;
 		let textColor:number;
+		let buttonWidth:number = 50
+		let textWidth:number =  windowWidth - buttonWidth - this._gap*3;
 		keys.forEach(key => {
 			if (key === "type") {
 				textColor = 0xaa4400;
 			} else {
 				textColor = 0x000000;
 			}
-			let textForStorageWindow:Text_Window = new Text_Window(data[key], textColor);
+			let textForStorageWindow:Text_Window = new Text_Window(data[key], textColor, textWidth);
 			textForStorageWindow.x = textX;
 			textForStorageWindow.y = textY;
 			textY += 22;
-			storageWindow.addChild(textForStorageWindow);
 
+			storageWindow.addChild(textForStorageWindow);
 			if (key === "login" || key === "password") {										//create buttons
-				let button:Button = new Button("copy", () => {this.copyCode(data[key] as string);});
+				let button:Button = new Button(
+					"copy",
+					() => {this.copyCode(data[key] as string);},
+					buttonWidth);
 				storageWindow.addChild(button);
 				button.x = windowWidth - button.width - this._gap;
 				button.y = textY - this._gap * 1.8;
