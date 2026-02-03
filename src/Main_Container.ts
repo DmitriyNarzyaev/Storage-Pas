@@ -5,6 +5,7 @@ import "pixi.js";
 import Storage_Window from "./Storage_Window";
 import Text_Window from "./Text_Window";
 import Button from "./Button";
+import Storage_Window_Constructor from "./Storage_Window_Constructor";
 
 export default class Main_Container extends Container {
 	public static readonly WINDOW_WIDTH:number = window.innerWidth;
@@ -54,15 +55,14 @@ export default class Main_Container extends Container {
 				}
 			}
 
-			let newStorageWindow:Storage_Window;
-			newStorageWindow = new Storage_Window(storageWindowsWidth, storageWindowsHeight);
+			let newStorageWindow:Storage_Window = new Storage_Window(storageWindowsWidth, storageWindowsHeight);
 			newStorageWindow.x = storageWindowsX;
 			newStorageWindow.y = storageWindowsY;
 			this._storageWindowsContainer.addChild(newStorageWindow);
 
 			let newWindowButton:Button = new Button(
 				"CREATE NEW",
-				() => { 			},
+				() => {this.createStorageWindowConstructor();},
 				storageWindowsWidth-this._gap*4,
 				storageWindowsHeight-this._gap*8);
 			newStorageWindow.addChild(newWindowButton);
@@ -74,6 +74,16 @@ export default class Main_Container extends Container {
 
 		backgroundHeight = storageWindowsY + storageWindowsHeight + this._gap;
 		this.createBackground(backgroundWidth, backgroundHeight);
+	}
+
+	private createStorageWindowConstructor():void {
+		this.removeChild(this._storageWindowsContainer);
+		const windowWidth:number = Main_Container.WINDOW_WIDTH*0.9;
+		const windowHeight:number = Main_Container.WINDOW_HEIGHT*0.9;
+		let newStorageWindowConstructor:Storage_Window_Constructor = new Storage_Window_Constructor(windowWidth, windowHeight);
+		newStorageWindowConstructor.x = (Main_Container.WINDOW_WIDTH - windowWidth)/2;
+		newStorageWindowConstructor.y = (Main_Container.WINDOW_HEIGHT - windowHeight)/2;
+		this.addChild(newStorageWindowConstructor);
 	}
 
 	// private textInputWindow(windowX:number, windowY:number):void {
