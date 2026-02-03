@@ -31,8 +31,8 @@ export default class Main_Container extends Container {
 	}
 
 	private startAll():void {
-		this._level = Main_Container.JSON_LOADER.response;
 		this._storageWindowsContainer = new PIXI.Container;
+		this._level = Main_Container.JSON_LOADER.response;
 		this.addChild(this._storageWindowsContainer);
 		this.createStorageWindowsGrid();
 	}
@@ -122,18 +122,18 @@ export default class Main_Container extends Container {
 		let backgroundX:number = 0;
 		let backgroundY:number = 0;
 		let background:PIXI.Graphics = new PIXI.Graphics;
-		background
-			.beginFill(0xbdb6bf)
-			.lineStyle(2, 0x997a8d)
-			.drawRect(backgroundX, backgroundY, backgroundWidth, backgroundHeight)
+		background.beginFill(0xbdb6bf);
+		if (background.width > 0) {																			//FIXME
+			background.lineStyle(2, 0x997a8d);
+		}
+		background.drawRect(backgroundX, backgroundY, backgroundWidth, backgroundHeight);
 		this._storageWindowsContainer.addChildAt(background, 0);
 		this._storageWindowsContainer.x = (Main_Container.WINDOW_WIDTH - this._storageWindowsContainer.width) / 2;
 		this._storageWindowsContainer.y = this._gap;
 	}
 
 	private createStorageWindow(windowX:number, windowY:number, windowWidth:number, windowHeight:number, numberOfWindow:number):void {
-		let storageWindow:Storage_Window;
-		storageWindow = new Storage_Window(windowWidth, windowHeight);
+		let storageWindow:Storage_Window = new Storage_Window(windowWidth, windowHeight);
 		storageWindow.x = windowX;
 		storageWindow.y = windowY;
 		this._storageWindowsContainer.addChild(storageWindow);

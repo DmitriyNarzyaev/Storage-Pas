@@ -11,7 +11,7 @@ export default class Storage_Window_Constructor extends Container {
         let storageWindow:PIXI.Graphics = new PIXI.Graphics;
         storageWindow
             .beginFill(0xddd6df)
-            .lineStyle(2, 0x997a8d, 1, 0)
+            .lineStyle(2, 0x997a8d)
             .drawRect(0, 0, WindowCreatorWidth, WindowCreatorHeight);
         this.addChild(storageWindow);
 
