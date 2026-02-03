@@ -1,6 +1,7 @@
 import Container = PIXI.Container;
 import "pixi.js";
-import TextInput from "../node_modules/pixi-text-input";
+//import "pixi-text-input"
+//import TextInput from "../node_modules/pixi-text-input";
 import Storage_Window from "./Storage_Window";
 import Text_Window from "./Text_Window";
 import Button from "./Button";
@@ -16,24 +17,6 @@ export default class Main_Container extends Container {
 	constructor() {
 		super();
 		this.jsonLoader();
-
-		let input = new TextInput({
-			input: {
-				fontSize: '25pt',
-				padding: '14px',
-				width: '500px',
-				color: '#26272E',
-			},
-			box: {
-				fill: 0xE8E9F3,
-				rounded: 16,
-				stroke: {
-					color: 0xCBCEE0,
-					width: 4
-				},
-			}
-		});
-		this.addChild(input);
 	}
 
 	private jsonLoader():void {
@@ -70,11 +53,60 @@ export default class Main_Container extends Container {
 					storageWindowsX = this._gap;
 				}
 			}
+
+			let newStorageWindow:Storage_Window;
+			newStorageWindow = new Storage_Window(storageWindowsWidth, storageWindowsHeight);
+			newStorageWindow.x = storageWindowsX;
+			newStorageWindow.y = storageWindowsY;
+			this._storageWindowsContainer.addChild(newStorageWindow);
+
+			let newWindowButton:Button = new Button(
+				"CREATE NEW",
+				() => { 			},
+				storageWindowsWidth-this._gap*4,
+				storageWindowsHeight-this._gap*8);
+			newStorageWindow.addChild(newWindowButton);
+			newWindowButton.x = this._gap*2;
+			newWindowButton.y = (storageWindowsHeight - newWindowButton.height) / 2;
+
+			//this.textInputWindow(newStorageWindow.x + this._gap, newStorageWindow.y + this._gap);
 		}
 
 		backgroundHeight = storageWindowsY + storageWindowsHeight + this._gap;
 		this.createBackground(backgroundWidth, backgroundHeight);
 	}
+
+	// private textInputWindow(windowX:number, windowY:number):void {
+	// 	let input = new TextInput({
+	// 		input: {
+	// 			fontSize: '14pt',
+	// 			padding: '7px',
+	// 			width: '265px',
+	// 			color: '#000000',
+	// 		},
+	// 		box: {
+	// 			default: {fill: 0xE8E9F3, rounded: 5, stroke: {color: 0x997a8d, width: 2}},
+	// 			focused: {fill: 0xE1E3EE, rounded: 5, stroke: {color: 0xb9aabd, width: 2}},
+	// 			disabled: {fill: 0xDBDBDB, rounded: 5}
+	// 		}
+	// 	});
+	// 	input.x = windowX;
+	// 	input.y = windowY;
+	// 	this._storageWindowsContainer.addChild(input);
+	//
+	// 	let inputText:string = "";
+	// 	input.on('keydown', keycode => {
+	// 		if (String.fromCharCode(keycode) === String.fromCharCode(keycode).toUpperCase()) {
+	// 			inputText += String.fromCharCode((96 <= keycode && keycode <= 105) ? keycode-48 : keycode)
+	// 		} else {
+	// 			inputText += String.fromCharCode((96 <= keycode && keycode <= 105) ? keycode-48 : keycode).toLowerCase();
+	// 		}
+	//
+	// 		if (keycode == 13) {
+	// 			console.log(inputText);
+	// 		}
+	// 	})
+	// }
 
 	private createBackground(backgroundWidth:number, backgroundHeight:number):void {
 		let backgroundX:number = 0;
@@ -102,6 +134,7 @@ export default class Main_Container extends Container {
 		let textY:number = 10;
 		let textColor:number;
 		let buttonWidth:number = 50
+		let buttonHeight:number = 19
 		let textWidth:number =  windowWidth - buttonWidth - this._gap*3;
 		keys.forEach(key => {
 			if (key === "type") {
@@ -119,7 +152,8 @@ export default class Main_Container extends Container {
 				let button:Button = new Button(
 					"copy",
 					() => {this.copyCode(data[key] as string);},
-					buttonWidth);
+					buttonWidth,
+					buttonHeight);
 				storageWindow.addChild(button);
 				button.x = windowWidth - button.width - this._gap;
 				button.y = textY - this._gap * 1.8;
