@@ -1,5 +1,6 @@
 import Container = PIXI.Container;
 import Text_Window from "./Text_Window";
+// @ts-ignore
 import TextInput from "../node_modules/pixi-text-input/text-input";
 
 export default class Storage_Window_Constructor extends Container {
@@ -48,7 +49,7 @@ export default class Storage_Window_Constructor extends Container {
         this.addChild(input);
 
     	let inputText:string = "";
-    	input.on('keydown', keycode => {
+    	input.on('keydown', (keycode: number) => {
     		if (String.fromCharCode(keycode) === String.fromCharCode(keycode).toUpperCase()) {
     			inputText += String.fromCharCode((96 <= keycode && keycode <= 105) ? keycode-48 : keycode)
     		} else {
