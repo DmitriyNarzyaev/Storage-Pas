@@ -1,7 +1,5 @@
 import Container = PIXI.Container;
 import "pixi.js";
-//import "pixi-text-input"
-//import TextInput from "../node_modules/pixi-text-input";
 import Storage_Window from "./Storage_Window";
 import Text_Window from "./Text_Window";
 import Button from "./Button";
@@ -85,38 +83,6 @@ export default class Main_Container extends Container {
 		newStorageWindowConstructor.y = (Main_Container.WINDOW_HEIGHT - windowHeight)/2;
 		this.addChild(newStorageWindowConstructor);
 	}
-
-	// private textInputWindow(windowX:number, windowY:number):void {
-	// 	let input = new TextInput({
-	// 		input: {
-	// 			fontSize: '14pt',
-	// 			padding: '7px',
-	// 			width: '265px',
-	// 			color: '#000000',
-	// 		},
-	// 		box: {
-	// 			default: {fill: 0xE8E9F3, rounded: 5, stroke: {color: 0x997a8d, width: 2}},
-	// 			focused: {fill: 0xE1E3EE, rounded: 5, stroke: {color: 0xb9aabd, width: 2}},
-	// 			disabled: {fill: 0xDBDBDB, rounded: 5}
-	// 		}
-	// 	});
-	// 	input.x = windowX;
-	// 	input.y = windowY;
-	// 	this._storageWindowsContainer.addChild(input);
-	//
-	// 	let inputText:string = "";
-	// 	input.on('keydown', keycode => {
-	// 		if (String.fromCharCode(keycode) === String.fromCharCode(keycode).toUpperCase()) {
-	// 			inputText += String.fromCharCode((96 <= keycode && keycode <= 105) ? keycode-48 : keycode)
-	// 		} else {
-	// 			inputText += String.fromCharCode((96 <= keycode && keycode <= 105) ? keycode-48 : keycode).toLowerCase();
-	// 		}
-	//
-	// 		if (keycode == 13) {
-	// 			console.log(inputText);
-	// 		}
-	// 	})
-	// }
 
 	private createBackground(backgroundWidth:number, backgroundHeight:number):void {
 		let backgroundX:number = 0;
