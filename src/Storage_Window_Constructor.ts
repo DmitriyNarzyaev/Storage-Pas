@@ -30,10 +30,10 @@ export default class Storage_Window_Constructor extends Container {
         let dataForDescriptionRow:string = ""
 
         this.textInputWindow(20, 55, dataForTypeRow);
-        // this.textInputWindow(20, 140, dataForURLRow);
-        // this.textInputWindow(20, 225, dataForLoginRow);
-        // this.textInputWindow(20, 310, dataForPasswordRow);
-        // this.textInputWindow(20, 395, dataForDescriptionRow);
+        this.textInputWindow(20, 140, dataForURLRow);
+        this.textInputWindow(20, 225, dataForLoginRow);
+        this.textInputWindow(20, 310, dataForPasswordRow);
+        this.textInputWindow(20, 395, dataForDescriptionRow);
 
         window.addEventListener("keydown",
             (e:KeyboardEvent) => {
