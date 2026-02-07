@@ -5,7 +5,8 @@ import Text_Window from "./Text_Window";
 export default class Start_Menu extends Container {
     private _TextWindow:Text_Window;
     private _TextForStartMenu:string = "Password Storage\n\n\nPassword Storage не хранит в себе базу данных и никуда"+
-        " не передаёт пароли.\nФайл базы данных хранится у пользователя. Ответственность за сохранность я не несу";
+        " не передаёт пароли.\nФайл базы данных хранится у пользователя. Ответственность за сохранность\n"+
+        "баз данных паролей несёт пользователь.";
 
     constructor() {
         super();

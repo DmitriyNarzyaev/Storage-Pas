@@ -4,7 +4,6 @@ import Text_Window from "./Text_Window";
 import TextInput from "../node_modules/pixi-text-input/text-input";
 
 export default class Storage_Window_Constructor extends Container {
-    private _shiftKeyDown:boolean = false;
 
     constructor(WindowCreatorWidth:number, WindowCreatorHeight:number) {
         super();
@@ -34,15 +33,6 @@ export default class Storage_Window_Constructor extends Container {
         this.textInputWindow(20, 225, dataForLoginRow);
         this.textInputWindow(20, 310, dataForPasswordRow);
         this.textInputWindow(20, 395, dataForDescriptionRow);
-
-        window.addEventListener("keydown",
-            (e:KeyboardEvent) => {
-                this.keyDownHandler(e);
-            },);
-        window.addEventListener("keyup",
-            (e:KeyboardEvent) => {
-                this.keyUpHandler(e);
-            },);
     }
 
     private textInputWindow(windowX:number, windowY:number, data:string):void {
@@ -63,43 +53,11 @@ export default class Storage_Window_Constructor extends Container {
         input.y = windowY;
         this.addChild(input);
 
-    	let inputText:string = "";
-    	input.on('keydown', (keycode: number) => {
-    		if (String.fromCharCode(keycode) === String.fromCharCode(keycode).toUpperCase()) {
-    			inputText += String.fromCharCode((96 <= keycode && keycode <= 105) ? keycode-48 : keycode)
-    		} else {
-    			inputText += String.fromCharCode((96 <= keycode && keycode <= 105) ? keycode-48 : keycode).toLowerCase();
-    		}
-    	})
-
         input.on('keydown', (keycode: number) => {
-            data += this.createCodeDescription(keycode).toString();
-            console.log(data);
+            if (keycode == 13) {
+                data += input.text
+                console.log(data);
+            }
         })
-    }
-
-    private keyDownHandler(e:KeyboardEvent):void {
-        if (e.shiftKey) {
-            this._shiftKeyDown = true;
-        }
-    }
-
-    private keyUpHandler(e:KeyboardEvent):void {
-        if (e.shiftKey == false) {
-            this._shiftKeyDown = false;
-        }
-    }
-
-    private createCodeDescription(keycode:number):string {
-        let returnWord:string
-        if ((keycode >= 65 || keycode <= 90) && this._shiftKeyDown==false && keycode) {
-            returnWord = String.fromCharCode(keycode).toLowerCase();
-        } else if ((keycode >= 65 || keycode <= 90) && this._shiftKeyDown==true && keycode) {
-            returnWord = String.fromCharCode(keycode);
-        }
-        if (returnWord.match(/[a-z]/i)) {
-            return returnWord
-        } else {
-            return ""}
     }
 }
