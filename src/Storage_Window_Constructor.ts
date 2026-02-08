@@ -2,8 +2,16 @@ import Container = PIXI.Container;
 import Text_Window from "./Text_Window";
 // @ts-ignore
 import TextInput from "../node_modules/pixi-text-input/text-input";
+import Button from "./Button";
+import Main_Container from "./Main_Container";
 
 export default class Storage_Window_Constructor extends Container {
+    private _dataForTypeRow:string = "type"
+    private _dataForURLRow:string = "url"
+    private _dataForLoginRow:string = "login"
+    private _dataForPasswordRow:string = "password"
+    private _dataForDescriptionRow:string = "description"
+    private _databaseSection:string = " "
 
     constructor(WindowCreatorWidth:number, WindowCreatorHeight:number) {
         super();
@@ -22,17 +30,13 @@ export default class Storage_Window_Constructor extends Container {
         textForStorageWindow.y = gap;
         this.addChild(textForStorageWindow);
 
-        let dataForTypeRow:string = ""
-        let dataForURLRow:string = ""
-        let dataForLoginRow:string = ""
-        let dataForPasswordRow:string = ""
-        let dataForDescriptionRow:string = ""
+        this.textInputWindow(20, 55, this._dataForTypeRow);
+        this.textInputWindow(20, 140, this._dataForURLRow);
+        this.textInputWindow(20, 225, this._dataForLoginRow);
+        this.textInputWindow(20, 310, this._dataForPasswordRow);
+        this.textInputWindow(20, 395, this._dataForDescriptionRow);
 
-        this.textInputWindow(20, 55, dataForTypeRow);
-        this.textInputWindow(20, 140, dataForURLRow);
-        this.textInputWindow(20, 225, dataForLoginRow);
-        this.textInputWindow(20, 310, dataForPasswordRow);
-        this.textInputWindow(20, 395, dataForDescriptionRow);
+        this.createDatabaseButton();
     }
 
     private textInputWindow(windowX:number, windowY:number, data:string):void {
@@ -53,11 +57,49 @@ export default class Storage_Window_Constructor extends Container {
         input.y = windowY;
         this.addChild(input);
 
+        let replacementText:string = "";
+
         input.on('keydown', (keycode: number) => {
-            if (keycode == 13) {
-                data += input.text
-                console.log(data);
+            replacementText = input.text
+            if (keycode == 13 && data == this._dataForTypeRow) {
+                this._dataForTypeRow = replacementText
+                console.log(this._dataForTypeRow);
+            } else if(keycode == 13 && data == this._dataForURLRow) {
+                this._dataForURLRow = replacementText
+                console.log(this._dataForURLRow);
+            }else if(keycode == 13 && data == this._dataForLoginRow) {
+                this._dataForLoginRow = replacementText
+                console.log(this._dataForLoginRow);
+            }else if(keycode == 13 && data == this._dataForPasswordRow) {
+                this._dataForPasswordRow = replacementText
+                console.log(this._dataForPasswordRow);
+            }else if(keycode == 13 && data == this._dataForDescriptionRow) {
+                this._dataForDescriptionRow = replacementText
+                console.log(this._dataForDescriptionRow);
             }
-        })
+        });
+    }
+
+    private createDatabaseButton():void {
+        let buttonX:number = 120;
+        let buttonY:number = 450;
+        let startButton:Button = new Button(
+            "Create",
+            () => {this.createDatabaseSection();},
+            80,
+            30);
+        startButton.x = buttonX;
+        startButton.y = buttonY;
+        this.addChild(startButton);
+    }
+
+    private createDatabaseSection():void {
+        this._databaseSection =
+            '"type":"' + this._dataForTypeRow + '",\n' +
+            '"url":"' + this._dataForURLRow + '",\n' +
+            '"login":"' + this._dataForLoginRow + '",\n' +
+            '"password":"' + this._dataForPasswordRow + '",\n' +
+            '"description":"' + this._dataForDescriptionRow + '",'
+        console.log(this._databaseSection);
     }
 }
