@@ -5,10 +5,11 @@ import Text_Window from "./Text_Window";
 import Button from "./Button";
 import Storage_Window_Constructor from "./Storage_Window_Constructor";
 import Start_Menu from "./Start_Menu";
+import Global from "./Global";
 
 export default class Main_Container extends Container {
-	public static readonly WINDOW_WIDTH:number = window.innerWidth;
-	public static readonly WINDOW_HEIGHT:number = window.innerHeight;
+	//public static readonly WINDOW_WIDTH:number = window.innerWidth;
+	//public static readonly WINDOW_HEIGHT:number = window.innerHeight;
 	public static JSON_LOADER:XMLHttpRequest;
 	private _level:ILevel;
 	private _startMenuContainer:PIXI.Container;
@@ -42,8 +43,8 @@ export default class Main_Container extends Container {
 			() => {this.startAll();},
 			80,
 			30);
-		startMenuButton.x = (Main_Container.WINDOW_WIDTH - startMenuButton.width) / 2;
-		startMenuButton.y = (Main_Container.WINDOW_HEIGHT - startMenuButton.height) / 1.5;
+		startMenuButton.x = (Global.WINDOW_WIDTH - startMenuButton.width) / 2;
+		startMenuButton.y = (Global.WINDOW_HEIGHT - startMenuButton.height) / 1.5;
 		this._startMenuContainer.addChild(startMenuButton);
 	}
 
@@ -71,7 +72,7 @@ export default class Main_Container extends Container {
 			for (let iterator:number = 0; iterator < this._level.items.length; iterator++) {
 				this.createStorageWindow(storageWindowsX, storageWindowsY, storageWindowsWidth, storageWindowsHeight, iterator);
 				storageWindowsX += storageWindowsWidth + this._gap;
-				if (storageWindowsX >= Main_Container.WINDOW_WIDTH - storageWindowsWidth) {
+				if (storageWindowsX >= Global.WINDOW_WIDTH - storageWindowsWidth) {
 					backgroundWidth = storageWindowsX;
 					storageWindowsY += storageWindowsHeight + this._gap;
 					storageWindowsX = this._gap;
@@ -101,11 +102,11 @@ export default class Main_Container extends Container {
 
 	private createStorageWindowConstructor():void {
 		this.removeAll();
-		const windowWidth:number = Main_Container.WINDOW_WIDTH*0.9;
-		const windowHeight:number = Main_Container.WINDOW_HEIGHT*0.9;
+		const windowWidth:number = Global.WINDOW_WIDTH*0.9;
+		const windowHeight:number = Global.WINDOW_HEIGHT*0.9;
 		let newStorageWindowConstructor:Storage_Window_Constructor = new Storage_Window_Constructor(windowWidth, windowHeight);
-		newStorageWindowConstructor.x = (Main_Container.WINDOW_WIDTH - windowWidth)/2;
-		newStorageWindowConstructor.y = (Main_Container.WINDOW_HEIGHT - windowHeight)/2;
+		newStorageWindowConstructor.x = (Global.WINDOW_WIDTH - windowWidth)/2;
+		newStorageWindowConstructor.y = (Global.WINDOW_HEIGHT - windowHeight)/2;
 		this.addChild(newStorageWindowConstructor);
 	}
 
@@ -119,7 +120,7 @@ export default class Main_Container extends Container {
 		}
 		background.drawRect(backgroundX, backgroundY, backgroundWidth, backgroundHeight);
 		this._storageWindowsContainer.addChildAt(background, 0);
-		this._storageWindowsContainer.x = (Main_Container.WINDOW_WIDTH - this._storageWindowsContainer.width) / 2;
+		this._storageWindowsContainer.x = (Global.WINDOW_WIDTH - this._storageWindowsContainer.width) / 2;
 		this._storageWindowsContainer.y = this._gap;
 	}
 
