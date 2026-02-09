@@ -28,7 +28,12 @@ export default class Button extends Container {
 
         const buttonText:PIXI.Text = new PIXI.Text (buttonName, textStyle);
         buttonText.x = (button.width - buttonText.width)/2 - 1;
-        buttonText.y = (button.height - buttonText.height)/2 - 4;
+        if (buttonHeight <= 20) {
+            buttonText.y = (button.height - buttonText.height)/2 - 2;
+        } else {
+            buttonText.y = (button.height - buttonText.height)/2;
+        }
+
         button.addChild(buttonText);
 
         if (callback) {

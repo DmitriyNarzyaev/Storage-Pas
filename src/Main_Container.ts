@@ -8,8 +8,6 @@ import Start_Menu from "./Start_Menu";
 import Global from "./Global";
 
 export default class Main_Container extends Container {
-	//public static readonly WINDOW_WIDTH:number = window.innerWidth;
-	//public static readonly WINDOW_HEIGHT:number = window.innerHeight;
 	public static JSON_LOADER:XMLHttpRequest;
 	private _level:ILevel;
 	private _startMenuContainer:PIXI.Container;

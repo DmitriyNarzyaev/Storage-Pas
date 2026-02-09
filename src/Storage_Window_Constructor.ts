@@ -3,15 +3,21 @@ import Text_Window from "./Text_Window";
 // @ts-ignore
 import TextInput from "../node_modules/pixi-text-input/text-input";
 import Button from "./Button";
-import Main_Container from "./Main_Container";
 
 export default class Storage_Window_Constructor extends Container {
-    private _dataForTypeRow:string = "type"
-    private _dataForURLRow:string = "url"
-    private _dataForLoginRow:string = "login"
-    private _dataForPasswordRow:string = "password"
-    private _dataForDescriptionRow:string = "description"
+    private _dataForTypeRow:string = " "
+    private _dataForURLRow:string = " "
+    private _dataForLoginRow:string = " "
+    private _dataForPasswordRow:string = " "
+    private _dataForDescriptionRow:string = " "
     private _databaseSection:string = " "
+
+    private _markerIterator:number = 1;
+    private _dataFinishedMarker1:PIXI.Graphics;
+    private _dataFinishedMarker2:PIXI.Graphics;
+    private _dataFinishedMarker3:PIXI.Graphics;
+    private _dataFinishedMarker4:PIXI.Graphics;
+    private _dataFinishedMarker5:PIXI.Graphics;
 
     constructor(WindowCreatorWidth:number, WindowCreatorHeight:number) {
         super();
@@ -40,6 +46,7 @@ export default class Storage_Window_Constructor extends Container {
     }
 
     private textInputWindow(windowX:number, windowY:number, data:string):void {
+        let replacementText:string = "";
         let input = new TextInput({
             input: {
                 fontSize: '14pt',
@@ -57,27 +64,58 @@ export default class Storage_Window_Constructor extends Container {
         input.y = windowY;
         this.addChild(input);
 
-        let replacementText:string = "";
-
         input.on('keydown', (keycode: number) => {
             replacementText = input.text
             if (keycode == 13 && data == this._dataForTypeRow) {
                 this._dataForTypeRow = replacementText
-                console.log(this._dataForTypeRow);
+                this._dataFinishedMarker1.tint = 0x00ff00;
             } else if(keycode == 13 && data == this._dataForURLRow) {
                 this._dataForURLRow = replacementText
-                console.log(this._dataForURLRow);
+                this._dataFinishedMarker2.tint = 0x00ff00;
             }else if(keycode == 13 && data == this._dataForLoginRow) {
                 this._dataForLoginRow = replacementText
-                console.log(this._dataForLoginRow);
+                this._dataFinishedMarker3.tint = 0x00ff00;
             }else if(keycode == 13 && data == this._dataForPasswordRow) {
                 this._dataForPasswordRow = replacementText
-                console.log(this._dataForPasswordRow);
+                this._dataFinishedMarker4.tint = 0x00ff00;
             }else if(keycode == 13 && data == this._dataForDescriptionRow) {
                 this._dataForDescriptionRow = replacementText
-                console.log(this._dataForDescriptionRow);
+                this._dataFinishedMarker5.tint = 0x00ff00;
             }
         });
+
+
+        let markerRadius:number = 10;
+        let markerPosX:number = input.x + input.width + markerRadius * 2;
+        let markerPosY:number = input.y + input.height/2;
+        this.createFinishedFillingMarker(markerPosX, markerPosY, markerRadius);
+    }
+
+    private createFinishedFillingMarker(positionX:number, positionY:number, markerRadius:number):void {
+        let marker:PIXI.Graphics;
+
+        marker = new PIXI.Graphics;
+        marker
+            .beginFill(0xddd6df)
+            .lineStyle(2, 0x997a8d)
+            .drawCircle(0, 0, markerRadius)
+        marker.x = positionX;
+        marker.y = positionY;
+        this.addChild(marker);
+        marker.tint = 0xdddddd;
+
+        if (this._markerIterator == 1) {
+            this._dataFinishedMarker1 = marker;
+        } else if (this._markerIterator == 2) {
+            this._dataFinishedMarker2 = marker;
+        }else if (this._markerIterator == 3) {
+            this._dataFinishedMarker3 = marker;
+        }else if (this._markerIterator == 4) {
+            this._dataFinishedMarker4 = marker;
+        }else if (this._markerIterator == 5) {
+            this._dataFinishedMarker5 = marker;
+        }
+        this._markerIterator ++;
     }
 
     private createDatabaseButton():void {
