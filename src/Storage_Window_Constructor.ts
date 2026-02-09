@@ -5,12 +5,12 @@ import TextInput from "../node_modules/pixi-text-input/text-input";
 import Button from "./Button";
 
 export default class Storage_Window_Constructor extends Container {
-    private _dataForTypeRow:string = " "
-    private _dataForURLRow:string = " "
-    private _dataForLoginRow:string = " "
-    private _dataForPasswordRow:string = " "
-    private _dataForDescriptionRow:string = " "
-    private _databaseSection:string = " "
+    private _dataForTypeRow:string = "type"
+    private _dataForURLRow:string = "url"
+    private _dataForLoginRow:string = "login"
+    private _dataForPasswordRow:string = "password"
+    private _dataForDescriptionRow:string = "description"
+    //private _databaseSection:string = " "
 
     private _markerIterator:number = 1;
     private _dataFinishedMarker1:PIXI.Graphics;
@@ -18,9 +18,11 @@ export default class Storage_Window_Constructor extends Container {
     private _dataFinishedMarker3:PIXI.Graphics;
     private _dataFinishedMarker4:PIXI.Graphics;
     private _dataFinishedMarker5:PIXI.Graphics;
+    private readonly _level:ILevel;
 
-    constructor(WindowCreatorWidth:number, WindowCreatorHeight:number) {
+    constructor(WindowCreatorWidth:number, WindowCreatorHeight:number, level:ILevel) {
         super();
+        this._level = level;
         let textForWindow:string = "Type:\n\n\n\nUrl\n\n\n\nLogin\n\n\n\nPassword\n\n\n\nDescription";
         let gap:number = 20;
 
@@ -84,7 +86,6 @@ export default class Storage_Window_Constructor extends Container {
             }
         });
 
-
         let markerRadius:number = 10;
         let markerPosX:number = input.x + input.width + markerRadius * 2;
         let markerPosY:number = input.y + input.height/2;
@@ -132,12 +133,37 @@ export default class Storage_Window_Constructor extends Container {
     }
 
     private createDatabaseSection():void {
-        this._databaseSection =
-            '"type":"' + this._dataForTypeRow + '",\n' +
-            '"url":"' + this._dataForURLRow + '",\n' +
-            '"login":"' + this._dataForLoginRow + '",\n' +
-            '"password":"' + this._dataForPasswordRow + '",\n' +
-            '"description":"' + this._dataForDescriptionRow + '",'
-        console.log(this._databaseSection);
+        // this._databaseSection =
+        //     "{\n" +
+        //     '\t"type":"' + this._dataForTypeRow + '",\n' +
+        //     '\t"url":"' + this._dataForURLRow + '",\n' +
+        //     '\t"login":"' + this._dataForLoginRow + '",\n' +
+        //     '\t"password":"' + this._dataForPasswordRow + '",\n' +
+        //     '\t"description":"' + this._dataForDescriptionRow + '",\n' +
+        //     "{";
+
+        //console.log(this._databaseSection);
+
+        let newObj:IBlock = (
+            {
+                type:this._dataForTypeRow,
+                url:this._dataForURLRow,
+                login:this._dataForLoginRow,
+                password:this._dataForPasswordRow,
+                description:this._dataForDescriptionRow
+            }
+        );
+
+        this._level.items.push(newObj);
+        JSON.stringify(this._level)
+        let res = JSON.stringify(this._level);
+
+        let blob = new Blob([res], {type: "json"});
+        let link = document.createElement("a");
+        link.setAttribute("href", URL.createObjectURL(blob));
+        link.setAttribute("download", "base.json");
+        link.click();
+
+        console.log(res);
     }
 }

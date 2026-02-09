@@ -1,5 +1,4 @@
 import Container = PIXI.Container;
-import Main_Container from "./Main_Container";
 import Text_Window from "./Text_Window";
 import Global from "./Global";
 

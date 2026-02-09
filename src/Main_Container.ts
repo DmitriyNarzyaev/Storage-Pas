@@ -102,7 +102,10 @@ export default class Main_Container extends Container {
 		this.removeAll();
 		const windowWidth:number = Global.WINDOW_WIDTH*0.9;
 		const windowHeight:number = Global.WINDOW_HEIGHT*0.9;
-		let newStorageWindowConstructor:Storage_Window_Constructor = new Storage_Window_Constructor(windowWidth, windowHeight);
+		let newStorageWindowConstructor:Storage_Window_Constructor = new Storage_Window_Constructor(
+			windowWidth,
+			windowHeight,
+			Main_Container.JSON_LOADER.response);
 		newStorageWindowConstructor.x = (Global.WINDOW_WIDTH - windowWidth)/2;
 		newStorageWindowConstructor.y = (Global.WINDOW_HEIGHT - windowHeight)/2;
 		this.addChild(newStorageWindowConstructor);

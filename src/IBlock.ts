@@ -3,4 +3,5 @@ interface IBlock {
     url:string;
     login:string;
     password:string;
+    description:string;
 }
