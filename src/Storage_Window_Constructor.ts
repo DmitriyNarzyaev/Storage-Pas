@@ -10,8 +10,6 @@ export default class Storage_Window_Constructor extends Container {
     private _dataForLoginRow:string = "login"
     private _dataForPasswordRow:string = "password"
     private _dataForDescriptionRow:string = "description"
-    //private _databaseSection:string = " "
-
     private _markerIterator:number = 1;
     private _dataFinishedMarker1:PIXI.Graphics;
     private _dataFinishedMarker2:PIXI.Graphics;
@@ -22,6 +20,15 @@ export default class Storage_Window_Constructor extends Container {
 
     constructor(WindowCreatorWidth:number, WindowCreatorHeight:number, level:ILevel) {
         super();
+
+        let windowWidth;
+        let windowHeight;
+
+        WindowCreatorWidth <= 500 ? windowWidth = 500 : windowWidth = WindowCreatorWidth;
+        WindowCreatorHeight <= 500 ? windowHeight = 500 : windowHeight = WindowCreatorHeight;
+
+
+
         this._level = level;
         let textForWindow:string = "Type:\n\n\n\nUrl\n\n\n\nLogin\n\n\n\nPassword\n\n\n\nDescription";
         let gap:number = 20;
@@ -30,7 +37,7 @@ export default class Storage_Window_Constructor extends Container {
         storageWindow
             .beginFill(0xddd6df)
             .lineStyle(2, 0x997a8d)
-            .drawRect(0, 0, WindowCreatorWidth, WindowCreatorHeight);
+            .drawRect(0, 0, windowWidth, windowHeight);
         this.addChild(storageWindow);
 
         let textForStorageWindow:Text_Window = new Text_Window(textForWindow, 0x000000, 0);
@@ -133,17 +140,6 @@ export default class Storage_Window_Constructor extends Container {
     }
 
     private createDatabaseSection():void {
-        // this._databaseSection =
-        //     "{\n" +
-        //     '\t"type":"' + this._dataForTypeRow + '",\n' +
-        //     '\t"url":"' + this._dataForURLRow + '",\n' +
-        //     '\t"login":"' + this._dataForLoginRow + '",\n' +
-        //     '\t"password":"' + this._dataForPasswordRow + '",\n' +
-        //     '\t"description":"' + this._dataForDescriptionRow + '",\n' +
-        //     "{";
-
-        //console.log(this._databaseSection);
-
         let newObj:IBlock = (
             {
                 type:this._dataForTypeRow,

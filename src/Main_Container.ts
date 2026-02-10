@@ -62,22 +62,29 @@ export default class Main_Container extends Container {
 	private createStorageWindowsGrid():void {
 		let storageWindowsX:number = this._gap;
 		let storageWindowsY:number = this._gap;
-		let storageWindowsWidth:number = 300;
-		let storageWindowsHeight:number = 140;
-		let backgroundWidth:number;
-		let backgroundHeight:number;
+		let storageWindowWidth:number = 300;
+		let storageWindowHeight:number = 180;
+		let backgroundWidth:number = 0;
+		let backgroundHeight:number = storageWindowHeight + this._gap*2;
+		let bgWidthMax:boolean = false;
+
 		if (this._level != null) {
 			for (let iterator:number = 0; iterator < this._level.items.length; iterator++) {
-				this.createStorageWindow(storageWindowsX, storageWindowsY, storageWindowsWidth, storageWindowsHeight, iterator);
-				storageWindowsX += storageWindowsWidth + this._gap;
-				if (storageWindowsX >= Global.WINDOW_WIDTH - storageWindowsWidth) {
-					backgroundWidth = storageWindowsX;
-					storageWindowsY += storageWindowsHeight + this._gap;
+				this.createStorageWindow(storageWindowsX, storageWindowsY, storageWindowWidth, storageWindowHeight, iterator);
+				storageWindowsX += storageWindowWidth + this._gap;
+
+				if (storageWindowsX + storageWindowWidth > Global.WINDOW_WIDTH) {
 					storageWindowsX = this._gap;
+					storageWindowsY += storageWindowHeight + this._gap;
+					backgroundHeight += storageWindowHeight + this._gap;
+					bgWidthMax = true;
+				}
+				if (!bgWidthMax) {
+					backgroundWidth = storageWindowsX + storageWindowWidth + this._gap;
 				}
 			}
 
-			let newStorageWindow:Storage_Window = new Storage_Window(storageWindowsWidth, storageWindowsHeight);
+			let newStorageWindow:Storage_Window = new Storage_Window(storageWindowWidth, storageWindowHeight);
 			newStorageWindow.x = storageWindowsX;
 			newStorageWindow.y = storageWindowsY;
 			this._storageWindowsContainer.addChild(newStorageWindow);
@@ -85,16 +92,12 @@ export default class Main_Container extends Container {
 			let newWindowButton:Button = new Button(
 				"CREATE NEW",
 				() => {this.createStorageWindowConstructor();},
-				storageWindowsWidth-this._gap*4,
-				storageWindowsHeight-this._gap*8);
+				storageWindowWidth-this._gap*4,
+				storageWindowHeight-this._gap*8);
 			newStorageWindow.addChild(newWindowButton);
 			newWindowButton.x = this._gap*2;
-			newWindowButton.y = (storageWindowsHeight - newWindowButton.height) / 2;
-
-			//this.textInputWindow(newStorageWindow.x + this._gap, newStorageWindow.y + this._gap);
+			newWindowButton.y = (storageWindowHeight - newWindowButton.height) / 2;
 		}
-
-		backgroundHeight = storageWindowsY + storageWindowsHeight + this._gap;
 		this.createBackground(backgroundWidth, backgroundHeight);
 	}
 
