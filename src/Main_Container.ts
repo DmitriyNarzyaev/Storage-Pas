@@ -6,6 +6,7 @@ import Button from "./Button";
 import Storage_Window_Constructor from "./Storage_Window_Constructor";
 import Start_Menu from "./Start_Menu";
 import Global from "./Global";
+import {InteractionEvent, IPoint} from "pixi.js";
 
 export default class Main_Container extends Container {
 	public static JSON_LOADER:XMLHttpRequest;
@@ -13,6 +14,7 @@ export default class Main_Container extends Container {
 	private _startMenuContainer:PIXI.Container;
 	private _storageWindowsContainer:PIXI.Container;
 	private _gap:number = 10;
+	private _touchDownPoint:IPoint;
 
 	constructor() {
 		super();
@@ -99,6 +101,39 @@ export default class Main_Container extends Container {
 			newWindowButton.y = (storageWindowHeight - newWindowButton.height) / 2;
 		}
 		this.createBackground(backgroundWidth, backgroundHeight);
+
+		if (this._storageWindowsContainer.height > Global.WINDOW_HEIGHT) {
+			this._storageWindowsContainer.interactive = true;
+			this._storageWindowsContainer.addListener('pointerdown', this.onDragStart, this);
+			this._storageWindowsContainer.addListener('pointerup', this.onDragEnd, this);
+			this._storageWindowsContainer.addListener('pointerupoutside', this.onDragEnd, this);
+		}
+	}
+
+	private onDragStart(event:InteractionEvent):void {
+		this._touchDownPoint = this._storageWindowsContainer.toLocal(event.data.global);
+		this._storageWindowsContainer.addListener('mousemove', this.onDragMove, this);
+		this._storageWindowsContainer.addListener('touchmove', this.onDragMove, this);
+
+	}
+
+	private onDragMove(event:InteractionEvent):void {
+		const newPosition:IPoint = this.toLocal(event.data.global);
+		this._storageWindowsContainer.y = newPosition.y - this._touchDownPoint.y;
+		this.dragLimits();
+	}
+
+	private onDragEnd():void {
+		this._storageWindowsContainer.removeListener('mousemove', this.onDragMove, this);
+		this._storageWindowsContainer.removeListener('touchmove', this.onDragMove, this);
+	}
+
+	private dragLimits():void {
+		if (this._storageWindowsContainer.y <= Global.WINDOW_HEIGHT -this._storageWindowsContainer.height - this._gap) {
+			this._storageWindowsContainer.y = Global.WINDOW_HEIGHT - this._storageWindowsContainer.height - this._gap;
+		} else if (this._storageWindowsContainer.y >= this._gap) {
+			this._storageWindowsContainer.y = this._gap;
+		}
 	}
 
 	private createStorageWindowConstructor():void {
