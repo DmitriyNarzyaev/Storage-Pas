@@ -13,8 +13,15 @@ export default class Main_Container extends Container {
 	private _level:ILevel;
 	private _startMenuContainer:PIXI.Container;
 	private _storageWindowsContainer:PIXI.Container;
+	private _constructorContainer:PIXI.Container;
 	private _gap:number = 10;
 	private _touchDownPoint:IPoint;
+	private _textForStartMenu:string ="Password Storage\n\n\nPassword Storage не хранит в себе базы данных и никуда "+
+		"их не передаёт.\nФайлы базы данных хранится у пользователя.\n\nПри заполнении каждого поля конструктора " +
+		"нажать клавишу Enter";
+
+	private _textForRestartMenu:string ="Password Storage\n\n\nДанные сохранены. \n"+
+		"Загрузите базу данных заново.";
 
 	constructor() {
 		super();
@@ -26,21 +33,21 @@ export default class Main_Container extends Container {
 		Main_Container.JSON_LOADER.responseType = "json";
 		Main_Container.JSON_LOADER.open("GET", "base.json", true);
 		Main_Container.JSON_LOADER.onreadystatechange = () => {
-			this.createStartMenu();
+			this.createStartMenu(this._textForStartMenu);
 		};
 		Main_Container.JSON_LOADER.send();
 	}
 
-	private createStartMenu():void {
+	private createStartMenu(textForStartMenu:string):void {
 		this.removeAll();
 		this._startMenuContainer = new PIXI.Container;
 		this.addChild(this._startMenuContainer);
-		let  startMenu:Start_Menu = new Start_Menu();
+		let  startMenu:Start_Menu = new Start_Menu(textForStartMenu);
 		this._startMenuContainer.addChild(startMenu);
 
 		let startMenuButton:Button = new Button(
 			"START",
-			() => {this.startAll();},
+			() => {this.startStorageWindows();},
 			80,
 			30);
 		startMenuButton.x = (Global.WINDOW_WIDTH - startMenuButton.width) / 2;
@@ -51,9 +58,10 @@ export default class Main_Container extends Container {
 	private removeAll():void {
 		this.removeChild(this._startMenuContainer);
 		this.removeChild(this._storageWindowsContainer);
+		this.removeChild(this._constructorContainer);
 	}
 
-	private startAll():void {
+	private startStorageWindows():void {
 		this.removeAll();
 		this._storageWindowsContainer = new PIXI.Container;
 		this._level = Main_Container.JSON_LOADER.response;
@@ -138,15 +146,55 @@ export default class Main_Container extends Container {
 
 	private createStorageWindowConstructor():void {
 		this.removeAll();
+		this._constructorContainer = new PIXI.Container;
+		this.addChild(this._constructorContainer)
 		const windowWidth:number = Global.WINDOW_WIDTH*0.9;
 		const windowHeight:number = Global.WINDOW_HEIGHT*0.9;
 		let newStorageWindowConstructor:Storage_Window_Constructor = new Storage_Window_Constructor(
 			windowWidth,
 			windowHeight,
-			Main_Container.JSON_LOADER.response);
+			Main_Container.JSON_LOADER.response)
 		newStorageWindowConstructor.x = (Global.WINDOW_WIDTH - windowWidth)/2;
 		newStorageWindowConstructor.y = (Global.WINDOW_HEIGHT - windowHeight)/2;
-		this.addChild(newStorageWindowConstructor);
+		this._constructorContainer.addChild(newStorageWindowConstructor);
+
+		let buttonX:number = 120;
+		let buttonY:number = 500;
+		let startButton:Button = new Button(
+			"Create",
+			() => {this.createDatabaseSection();},
+			80,
+			30);
+		startButton.x = buttonX;
+		startButton.y = buttonY;
+		this._constructorContainer.addChild(startButton);
+	}
+
+	private createDatabaseSection():void {
+		let newObj:IBlock = (
+			{
+				type:Storage_Window_Constructor.dataForTypeRow,
+				url:Storage_Window_Constructor.dataForURLRow,
+				login:Storage_Window_Constructor.dataForLoginRow,
+				password:Storage_Window_Constructor.dataForPasswordRow,
+				description:Storage_Window_Constructor.dataForDescriptionRow
+			}
+		);
+
+		this._level.items.push(newObj);
+		JSON.stringify(this._level)
+		let res = JSON.stringify(this._level);
+
+		let blob = new Blob([res], {type: "json"});
+		let link = document.createElement("a");
+		link.setAttribute("href", URL.createObjectURL(blob));
+		link.setAttribute("download", "base.json");
+		link.click();
+
+		console.log(res);
+
+		this.removeAll();
+		this.createStartMenu(this._textForRestartMenu);
 	}
 
 	private createBackground(backgroundWidth:number, backgroundHeight:number):void {

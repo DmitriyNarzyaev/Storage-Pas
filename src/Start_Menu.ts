@@ -4,14 +4,11 @@ import Global from "./Global";
 
 export default class Start_Menu extends Container {
     private _TextWindow:Text_Window;
-    private _TextForStartMenu:string = "Password Storage\n\n\nPassword Storage не хранит в себе базы данных и никуда "+
-        "их не передаёт.\nФайлы базы данных хранится у пользователя.\n\nПри заполнении поля конструктора " +
-        "нажать клавишу Enter";
 
-    constructor() {
+    constructor(textForStartMenu:string) {
         super();
         this.createBackground();
-        this.createTextForStartMenu();
+        this.createTextForStartMenu(textForStartMenu);
     }
 
     private createBackground():void {
@@ -22,8 +19,8 @@ export default class Start_Menu extends Container {
         this.addChild(background);
     }
 
-    private createTextForStartMenu():void {
-        this._TextWindow = new Text_Window(this._TextForStartMenu, 0x492a3d, 0);
+    private createTextForStartMenu(textForStartMenu:string):void {
+        this._TextWindow = new Text_Window(textForStartMenu, 0x492a3d, 0);
         this._TextWindow.x = (Global.WINDOW_WIDTH - this._TextWindow.width) / 2;
         this._TextWindow.y = (Global.WINDOW_HEIGHT - this._TextWindow.height) / 3;
         this.addChild(this._TextWindow);

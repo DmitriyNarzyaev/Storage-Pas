@@ -2,14 +2,13 @@ import Container = PIXI.Container;
 import Text_Window from "./Text_Window";
 // @ts-ignore
 import TextInput from "../node_modules/pixi-text-input/text-input";
-import Button from "./Button";
 
 export default class Storage_Window_Constructor extends Container {
-    private _dataForTypeRow:string = "type"
-    private _dataForURLRow:string = "url"
-    private _dataForLoginRow:string = "login"
-    private _dataForPasswordRow:string = "password"
-    private _dataForDescriptionRow:string = "description"
+    public static dataForTypeRow:string = "type"
+    public static dataForURLRow:string = "url"
+    public static dataForLoginRow:string = "login"
+    public static dataForPasswordRow:string = "password"
+    public static dataForDescriptionRow:string = "description"
     private _markerIterator:number = 1;
     private _dataFinishedMarker1:PIXI.Graphics;
     private _dataFinishedMarker2:PIXI.Graphics;
@@ -27,8 +26,6 @@ export default class Storage_Window_Constructor extends Container {
         WindowCreatorWidth <= 500 ? windowWidth = 500 : windowWidth = WindowCreatorWidth;
         WindowCreatorHeight <= 500 ? windowHeight = 500 : windowHeight = WindowCreatorHeight;
 
-
-
         this._level = level;
         let textForWindow:string = "Type:\n\n\n\nUrl\n\n\n\nLogin\n\n\n\nPassword\n\n\n\nDescription";
         let gap:number = 20;
@@ -45,13 +42,11 @@ export default class Storage_Window_Constructor extends Container {
         textForStorageWindow.y = gap;
         this.addChild(textForStorageWindow);
 
-        this.textInputWindow(20, 55, this._dataForTypeRow);
-        this.textInputWindow(20, 140, this._dataForURLRow);
-        this.textInputWindow(20, 225, this._dataForLoginRow);
-        this.textInputWindow(20, 310, this._dataForPasswordRow);
-        this.textInputWindow(20, 395, this._dataForDescriptionRow);
-
-        this.createDatabaseButton();
+        this.textInputWindow(20, 55, Storage_Window_Constructor.dataForTypeRow);
+        this.textInputWindow(20, 140, Storage_Window_Constructor.dataForURLRow);
+        this.textInputWindow(20, 225, Storage_Window_Constructor.dataForLoginRow);
+        this.textInputWindow(20, 310, Storage_Window_Constructor.dataForPasswordRow);
+        this.textInputWindow(20, 395, Storage_Window_Constructor.dataForDescriptionRow);
     }
 
     private textInputWindow(windowX:number, windowY:number, data:string):void {
@@ -75,20 +70,20 @@ export default class Storage_Window_Constructor extends Container {
 
         input.on('keydown', (keycode: number) => {
             replacementText = input.text
-            if (keycode == 13 && data == this._dataForTypeRow) {
-                this._dataForTypeRow = replacementText
+            if (keycode == 13 && data == Storage_Window_Constructor.dataForTypeRow) {
+                Storage_Window_Constructor.dataForTypeRow = replacementText
                 this._dataFinishedMarker1.tint = 0x00ff00;
-            } else if(keycode == 13 && data == this._dataForURLRow) {
-                this._dataForURLRow = replacementText
+            } else if(keycode == 13 && data == Storage_Window_Constructor.dataForURLRow) {
+                Storage_Window_Constructor.dataForURLRow = replacementText
                 this._dataFinishedMarker2.tint = 0x00ff00;
-            }else if(keycode == 13 && data == this._dataForLoginRow) {
-                this._dataForLoginRow = replacementText
+            }else if(keycode == 13 && data == Storage_Window_Constructor.dataForLoginRow) {
+                Storage_Window_Constructor.dataForLoginRow = replacementText
                 this._dataFinishedMarker3.tint = 0x00ff00;
-            }else if(keycode == 13 && data == this._dataForPasswordRow) {
-                this._dataForPasswordRow = replacementText
+            }else if(keycode == 13 && data == Storage_Window_Constructor.dataForPasswordRow) {
+                Storage_Window_Constructor.dataForPasswordRow = replacementText
                 this._dataFinishedMarker4.tint = 0x00ff00;
-            }else if(keycode == 13 && data == this._dataForDescriptionRow) {
-                this._dataForDescriptionRow = replacementText
+            }else if(keycode == 13 && data == Storage_Window_Constructor.dataForDescriptionRow) {
+                Storage_Window_Constructor.dataForDescriptionRow = replacementText
                 this._dataFinishedMarker5.tint = 0x00ff00;
             }
         });
@@ -124,42 +119,5 @@ export default class Storage_Window_Constructor extends Container {
             this._dataFinishedMarker5 = marker;
         }
         this._markerIterator ++;
-    }
-
-    private createDatabaseButton():void {
-        let buttonX:number = 120;
-        let buttonY:number = 450;
-        let startButton:Button = new Button(
-            "Create",
-            () => {this.createDatabaseSection();},
-            80,
-            30);
-        startButton.x = buttonX;
-        startButton.y = buttonY;
-        this.addChild(startButton);
-    }
-
-    private createDatabaseSection():void {
-        let newObj:IBlock = (
-            {
-                type:this._dataForTypeRow,
-                url:this._dataForURLRow,
-                login:this._dataForLoginRow,
-                password:this._dataForPasswordRow,
-                description:this._dataForDescriptionRow
-            }
-        );
-
-        this._level.items.push(newObj);
-        JSON.stringify(this._level)
-        let res = JSON.stringify(this._level);
-
-        let blob = new Blob([res], {type: "json"});
-        let link = document.createElement("a");
-        link.setAttribute("href", URL.createObjectURL(blob));
-        link.setAttribute("download", "base.json");
-        link.click();
-
-        console.log(res);
     }
 }
