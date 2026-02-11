@@ -25,7 +25,7 @@ export default class Main_Container extends Container {
 
 	constructor() {
 		super();
-		this.jsonLoader();
+		this.createStartMenu(this._textForStartMenu);
 	}
 
 	private jsonLoader():void {
@@ -33,7 +33,7 @@ export default class Main_Container extends Container {
 		Main_Container.JSON_LOADER.responseType = "json";
 		Main_Container.JSON_LOADER.open("GET", "base.json", true);
 		Main_Container.JSON_LOADER.onreadystatechange = () => {
-			this.createStartMenu(this._textForStartMenu);
+			this.startStorageWindows();
 		};
 		Main_Container.JSON_LOADER.send();
 	}
@@ -47,7 +47,7 @@ export default class Main_Container extends Container {
 
 		let startMenuButton:Button = new Button(
 			"START",
-			() => {this.startStorageWindows();},
+			() => {this.jsonLoader();},
 			80,
 			30);
 		startMenuButton.x = (Global.WINDOW_WIDTH - startMenuButton.width) / 2;
@@ -182,13 +182,13 @@ export default class Main_Container extends Container {
 		);
 
 		this._level.items.push(newObj);
-		JSON.stringify(this._level)
+		JSON.stringify(this._level);
 		let res = JSON.stringify(this._level);
 
 		let blob = new Blob([res], {type: "json"});
 		let link = document.createElement("a");
 		link.setAttribute("href", URL.createObjectURL(blob));
-		link.setAttribute("download", "base.json");
+		link.setAttribute("download", "../assets/base.json");
 		link.click();
 
 		console.log(res);

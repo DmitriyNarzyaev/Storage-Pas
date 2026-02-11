@@ -14,7 +14,10 @@
 		"sourceMap": true,
 		"allowJs": true,
 		"emitDecoratorMetadata": true,
-		"experimentalDecorators": true
+		"experimentalDecorators": true,
+		"resolveJsonModule": true,
+		"esModuleInterop ": true
+
 	},
 	"include": [
 		"src/**/*"
