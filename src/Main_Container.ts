@@ -16,9 +16,8 @@ export default class Main_Container extends Container {
 	private _constructorContainer:PIXI.Container;
 	private _gap:number = 10;
 	private _touchDownPoint:IPoint;
-	private _textForStartMenu:string ="Password Storage\n\n\nPassword Storage не хранит в себе базы данных и никуда "+
-		"их не передаёт.\nФайлы базы данных хранится у пользователя.\n\nПри заполнении каждого поля конструктора " +
-		"нажать клавишу Enter";
+	private _textForStartMenu:string ="Password Storage\n\n\nPassword Storage находится в процессе разработки."+
+		"\n\nПри заполнении каждого поля конструктора нажимать клавишу Enter.";
 
 	private _textForRestartMenu:string ="Password Storage\n\n\nДанные сохранены. \n"+
 		"Загрузите базу данных заново.";
@@ -232,12 +231,20 @@ export default class Main_Container extends Container {
 			} else {
 				textColor = 0x000000;
 			}
-			let textForStorageWindow:Text_Window = new Text_Window(data[key], textColor, textWidth);
-			textForStorageWindow.x = textX;
-			textForStorageWindow.y = textY;
+			if (key === "description") {
+				let textForStorageWindow:Text_Window = new Text_Window(data[key], textColor, textWidth, true);
+				textForStorageWindow.x = textX;
+				textForStorageWindow.y = textY;
+				storageWindow.addChild(textForStorageWindow);
+			} else {
+				let textForStorageWindow:Text_Window = new Text_Window(data[key], textColor, textWidth, false);
+				textForStorageWindow.x = textX;
+				textForStorageWindow.y = textY;
+				storageWindow.addChild(textForStorageWindow);
+			}
+
 			textY += 22;
 
-			storageWindow.addChild(textForStorageWindow);
 			if (key === "login" || key === "password") {										//create buttons
 				let button:Button = new Button(
 					"copy",

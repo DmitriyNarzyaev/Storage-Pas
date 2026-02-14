@@ -20,7 +20,7 @@ export default class Start_Menu extends Container {
     }
 
     private createTextForStartMenu(textForStartMenu:string):void {
-        this._TextWindow = new Text_Window(textForStartMenu, 0x492a3d, 0);
+        this._TextWindow = new Text_Window(textForStartMenu, 0x492a3d, 0, false);
         this._TextWindow.x = (Global.WINDOW_WIDTH - this._TextWindow.width) / 2;
         this._TextWindow.y = (Global.WINDOW_HEIGHT - this._TextWindow.height) / 3;
         this.addChild(this._TextWindow);
