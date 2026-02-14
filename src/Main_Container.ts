@@ -182,16 +182,17 @@ export default class Main_Container extends Container {
 		);
 
 		this._level.items.push(newObj);
-		JSON.stringify(this._level);
 		let res = JSON.stringify(this._level);
 
-		let blob = new Blob([res], {type: "json"});
-		let link = document.createElement("a");
-		link.setAttribute("href", URL.createObjectURL(blob));
-		link.setAttribute("download", "../assets/base.json");
-		link.click();
+		Main_Container.JSON_LOADER.open("SET", "base.json", true);
 
 		console.log(res);
+
+		// let blob = new Blob([res], {type: "json"});
+		// let link = document.createElement("a");
+		// link.setAttribute("href", URL.createObjectURL(blob));
+		// link.setAttribute("download", "base.json");
+		// link.click();
 
 		this.removeAll();
 		this.createStartMenu(this._textForRestartMenu);
