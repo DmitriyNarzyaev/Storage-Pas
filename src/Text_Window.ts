@@ -1,9 +1,10 @@
 import Container = PIXI.Container;
 import {TextStyle} from "pixi.js";
+import Global from "./Global";
 
 export default class Text_Window extends Container {
 
-    constructor(textContent:string, color:number, maskWidth:number, wordWrap:boolean) {
+    constructor(textContent:string, color:number, maskWidth:number, wordWrapWidth:number) {
         super();
 
         let textStyle:TextStyle = new PIXI.TextStyle ({
@@ -15,9 +16,9 @@ export default class Text_Window extends Container {
 
         let contentText:PIXI.Text = new PIXI.Text (textContent, textStyle);
 
-        if (wordWrap == true) {
+        if (wordWrapWidth > 0) {
             contentText.style.wordWrap = true;
-            contentText.style.wordWrapWidth = maskWidth;
+            contentText.style.wordWrapWidth = wordWrapWidth;
         }
 
         if (maskWidth > 0) {

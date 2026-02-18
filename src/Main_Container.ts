@@ -277,12 +277,12 @@ export default class Main_Container extends Container {
 				textColor = 0x000000;
 			}
 			if (key === "description") {
-				let textForStorageWindow:Text_Window = new Text_Window(data[key], textColor, textWidth, true);
+				let textForStorageWindow:Text_Window = new Text_Window(data[key], textColor, textWidth, textWidth);
 				textForStorageWindow.x = textX;
 				textForStorageWindow.y = textY;
 				storageWindow.addChild(textForStorageWindow);
 			} else {
-				let textForStorageWindow:Text_Window = new Text_Window(data[key], textColor, textWidth, false);
+				let textForStorageWindow:Text_Window = new Text_Window(data[key], textColor, textWidth, 0);
 				textForStorageWindow.x = textX;
 				textForStorageWindow.y = textY;
 				storageWindow.addChild(textForStorageWindow);
