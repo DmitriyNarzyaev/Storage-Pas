@@ -4,29 +4,26 @@ import Text_Window from "./Text_Window";
 import TextInput from "../node_modules/pixi-text-input/text-input";
 
 export default class Storage_Window_Constructor extends Container {
-    public static dataForTypeRow:string = "type"
-    public static dataForURLRow:string = "url"
-    public static dataForLoginRow:string = "login"
-    public static dataForPasswordRow:string = "password"
-    public static dataForDescriptionRow:string = "description"
+    public static dataForTypeRow:string = "type";
+    public static dataForURLRow:string = "url";
+    public static dataForLoginRow:string = "login";
+    public static dataForPasswordRow:string = "password";
+    public static dataForDescriptionRow:string = "description";
     private _markerIterator:number = 1;
     private _dataFinishedMarker1:PIXI.Graphics;
     private _dataFinishedMarker2:PIXI.Graphics;
     private _dataFinishedMarker3:PIXI.Graphics;
     private _dataFinishedMarker4:PIXI.Graphics;
     private _dataFinishedMarker5:PIXI.Graphics;
-    private readonly _level:ILevel;
 
-    constructor(WindowCreatorWidth:number, WindowCreatorHeight:number, level:ILevel) {
+    constructor(WindowCreatorWidth:number, WindowCreatorHeight:number) {
         super();
-
         let windowWidth;
         let windowHeight;
 
         WindowCreatorWidth <= 450 ? windowWidth = 450 : windowWidth = WindowCreatorWidth;
         WindowCreatorHeight <= 520 ? windowHeight = 520 : windowHeight = WindowCreatorHeight;
 
-        this._level = level;
         let textForWindow:string = "Type:\n\n\n\nUrl\n\n\n\nLogin\n\n\n\nPassword\n\n\n\nDescription";
         let gap:number = 20;
 
@@ -50,7 +47,7 @@ export default class Storage_Window_Constructor extends Container {
     }
 
     private textInputWindow(windowX:number, windowY:number, data:string):void {
-        let replacementText:string = "";
+        let replacementText:string = " ";
         let input = new TextInput({
             input: {
                 fontSize: '14pt',
