@@ -23,8 +23,8 @@ export default class Storage_Window_Constructor extends Container {
         let windowWidth;
         let windowHeight;
 
-        WindowCreatorWidth <= 500 ? windowWidth = 500 : windowWidth = WindowCreatorWidth;
-        WindowCreatorHeight <= 500 ? windowHeight = 500 : windowHeight = WindowCreatorHeight;
+        WindowCreatorWidth <= 450 ? windowWidth = 450 : windowWidth = WindowCreatorWidth;
+        WindowCreatorHeight <= 520 ? windowHeight = 520 : windowHeight = WindowCreatorHeight;
 
         this._level = level;
         let textForWindow:string = "Type:\n\n\n\nUrl\n\n\n\nLogin\n\n\n\nPassword\n\n\n\nDescription";

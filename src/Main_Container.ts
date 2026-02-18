@@ -37,6 +37,17 @@ export default class Main_Container extends Container {
 		Main_Container.JSON_LOADER.send();
 	}
 
+	private createButton(bX:number, bY:number, bWidth:number, bHeight:number, saveCont:PIXI.Container, callback:any, name:string):void {
+		let createButton:Button = new Button(
+			name,
+			callback,
+			bWidth,
+			bHeight);
+		createButton.x = bX;
+		createButton.y = bY;
+		saveCont.addChild(createButton);
+	}
+
 	private createStartMenu(textForStartMenu:string):void {
 		this.removeAll();
 		this._startMenuContainer = new PIXI.Container;
@@ -44,14 +55,18 @@ export default class Main_Container extends Container {
 		let  startMenu:Start_Menu = new Start_Menu(textForStartMenu);
 		this._startMenuContainer.addChild(startMenu);
 
-		let startMenuButton:Button = new Button(
-			"START",
+		let startMenuButtonWidth:number = 80;
+		let startMenuButtonHeight:number = 30;
+		let startMenuButtonX:number = (Global.WINDOW_WIDTH - startMenuButtonWidth) / 2;
+		let startMenuButtonY = (Global.WINDOW_HEIGHT - startMenuButtonHeight) / 1.5;
+		this.createButton(																								//BUTTON START MENU
+			startMenuButtonX,
+			startMenuButtonY,
+			startMenuButtonWidth,
+			startMenuButtonHeight,
+			this._startMenuContainer,
 			() => {this.jsonLoader();},
-			80,
-			30);
-		startMenuButton.x = (Global.WINDOW_WIDTH - startMenuButton.width) / 2;
-		startMenuButton.y = (Global.WINDOW_HEIGHT - startMenuButton.height) / 1.5;
-		this._startMenuContainer.addChild(startMenuButton);
+			"START");
 	}
 
 	private removeAll():void {
@@ -98,14 +113,19 @@ export default class Main_Container extends Container {
 			newStorageWindow.y = storageWindowsY;
 			this._storageWindowsContainer.addChild(newStorageWindow);
 
-			let newWindowButton:Button = new Button(
-				"CREATE NEW",
+			let windowButtonWidth:number = storageWindowWidth-this._gap*4;
+			let windowButtonHeight:number = storageWindowHeight-this._gap*8;
+			let windowButtonX:number = this._gap*2;
+			let windowButtonY:number = (storageWindowHeight - windowButtonHeight) / 2;
+
+			this.createButton(																							//BUTTON CREATE NEW WINDOW
+				windowButtonX,
+				windowButtonY,
+				windowButtonWidth,
+				windowButtonHeight,
+				newStorageWindow,
 				() => {this.createStorageWindowConstructor();},
-				storageWindowWidth-this._gap*4,
-				storageWindowHeight-this._gap*8);
-			newStorageWindow.addChild(newWindowButton);
-			newWindowButton.x = this._gap*2;
-			newWindowButton.y = (storageWindowHeight - newWindowButton.height) / 2;
+				"CREATE NEW")
 		}
 		this.createBackground(backgroundWidth, backgroundHeight);
 
@@ -121,7 +141,6 @@ export default class Main_Container extends Container {
 		this._touchDownPoint = this._storageWindowsContainer.toLocal(event.data.global);
 		this._storageWindowsContainer.addListener('mousemove', this.onDragMove, this);
 		this._storageWindowsContainer.addListener('touchmove', this.onDragMove, this);
-
 	}
 
 	private onDragMove(event:InteractionEvent):void {
@@ -157,24 +176,32 @@ export default class Main_Container extends Container {
 		storageWindowConstructor.y = (Global.WINDOW_HEIGHT - windowHeight)/2;
 		this._constructorContainer.addChild(storageWindowConstructor);
 
+		let buttonCreateWidth:number = 80;
+		let buttonCreateHeight:number = 30;
 		let buttonCreateX:number = 120;
 		let buttonCreateY:number = 500;
-		let buttonCreate:Button = new Button(
-			"Create",
-			() => {this.createDatabaseSection();},
-			80,
-			30);
-		buttonCreate.x = buttonCreateX;
-		buttonCreate.y = buttonCreateY;
-		this._constructorContainer.addChild(buttonCreate);
 
-		let buttonClosed:Button = new Button(
-			"╳",
+		this.createButton(																								//BUTTON CREATE
+			buttonCreateX,
+			buttonCreateY,
+			buttonCreateWidth,
+			buttonCreateHeight,
+			this._constructorContainer,
+			() => {this.createDatabaseSection();},
+			"Create")
+
+		let buttonWidth:number = 25;
+		let buttonHeight:number = 25;
+		let buttonClosedX:number = storageWindowConstructor.x + windowWidth - buttonWidth - this._gap;
+		let buttonClosedY:number = storageWindowConstructor.y + this._gap;
+		this.createButton(																								//BUTTON CLOSED
+			buttonClosedX,
+			buttonClosedY,
+			buttonWidth,
+			buttonHeight,
+			this._constructorContainer,
 			() => {this.startStorageWindows();},
-			25, 25);
-		buttonClosed.x = storageWindowConstructor.x + windowWidth - buttonClosed.width - this._gap;
-		buttonClosed.y = storageWindowConstructor.y + this._gap;
-		this._constructorContainer.addChild(buttonClosed);
+			"╳")
 	}
 
 	private createDatabaseSection():void {
@@ -223,14 +250,15 @@ export default class Main_Container extends Container {
 		storageWindow.y = windowY;
 		this._storageWindowsContainer.addChild(storageWindow);
 
-		const data:Record<string, any> = this._level.items[numberOfWindow];						//create text on storage
+		const data:Record<string, any> = this._level.items[numberOfWindow];												//create text on storage
 		const keys:string[] = Object.keys(data);
 		let textX:number = 10;
 		let textY:number = 10;
+		let copyButtonWidth:number = 50;
+		let copyButtonHeight:number = 19;
 		let textColor:number;
-		let buttonWidth:number = 50
-		let buttonHeight:number = 19
-		let textWidth:number =  windowWidth - buttonWidth - this._gap*3;
+		let textWidth:number =  windowWidth - copyButtonWidth - this._gap*3;
+
 		keys.forEach(key => {
 			if (key === "type") {
 				textColor = 0xaa4400;
@@ -250,15 +278,18 @@ export default class Main_Container extends Container {
 			}
 
 			textY += 22;
-			if (key === "login" || key === "password") {										//create buttons
-				let button:Button = new Button(
-					"copy",
+			let copyButtonX:number = windowWidth - copyButtonWidth - this._gap;
+			let copyButtonY:number = textY - this._gap * 1.8;
+
+			if (key === "login" || key === "password") {																//BUTTON COPY TEXT TO CLIPBOARD
+				this.createButton(
+					copyButtonX,
+					copyButtonY,
+					copyButtonWidth,
+					copyButtonHeight,
+					storageWindow,
 					() => {this.copyCode(data[key] as string);},
-					buttonWidth,
-					buttonHeight);
-				storageWindow.addChild(button);
-				button.x = windowWidth - button.width - this._gap;
-				button.y = textY - this._gap * 1.8;
+					"copy")
 			}
 		});
 	}
