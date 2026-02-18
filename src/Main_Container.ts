@@ -73,6 +73,12 @@ export default class Main_Container extends Container {
 		this.removeChild(this._startMenuContainer);
 		this.removeChild(this._storageWindowsContainer);
 		this.removeChild(this._constructorContainer);
+
+		Storage_Window_Constructor.dataForTypeRow = "type"
+		Storage_Window_Constructor.dataForURLRow = "url"
+		Storage_Window_Constructor.dataForLoginRow = "login"
+		Storage_Window_Constructor.dataForPasswordRow = "password"
+		Storage_Window_Constructor.dataForDescriptionRow = "description"
 	}
 
 	private startStorageWindows():void {
@@ -170,8 +176,7 @@ export default class Main_Container extends Container {
 		const windowHeight:number = Global.WINDOW_HEIGHT*0.9;
 		let storageWindowConstructor:Storage_Window_Constructor = new Storage_Window_Constructor(
 			windowWidth,
-			windowHeight,
-			Main_Container.JSON_LOADER.response)
+			windowHeight);
 		storageWindowConstructor.x = (Global.WINDOW_WIDTH - windowWidth)/2;
 		storageWindowConstructor.y = (Global.WINDOW_HEIGHT - windowHeight)/2;
 		this._constructorContainer.addChild(storageWindowConstructor);
@@ -205,6 +210,12 @@ export default class Main_Container extends Container {
 	}
 
 	private createDatabaseSection():void {
+		if (Storage_Window_Constructor.dataForTypeRow == "type") {Storage_Window_Constructor.dataForTypeRow = " "}
+		if (Storage_Window_Constructor.dataForURLRow == "url") {Storage_Window_Constructor.dataForURLRow = " "}
+		if (Storage_Window_Constructor.dataForLoginRow == "login") {Storage_Window_Constructor.dataForLoginRow = " "}
+		if (Storage_Window_Constructor.dataForPasswordRow == "password") {Storage_Window_Constructor.dataForPasswordRow = " "}
+		if (Storage_Window_Constructor.dataForDescriptionRow == "description") {Storage_Window_Constructor.dataForDescriptionRow = " "}
+
 		let newObj:IBlock = (
 			{
 				type:Storage_Window_Constructor.dataForTypeRow,
@@ -235,7 +246,7 @@ export default class Main_Container extends Container {
 		let backgroundY:number = 0;
 		let background:PIXI.Graphics = new PIXI.Graphics;
 		background.beginFill(0xbdb6bf);
-		if (background.width > 0) {																			//FIXME
+		if (background.width > 0) {																						//FIXME
 			background.lineStyle(2, 0x997a8d);
 		}
 		background.drawRect(backgroundX, backgroundY, backgroundWidth, backgroundHeight);
