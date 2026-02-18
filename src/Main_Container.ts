@@ -149,24 +149,32 @@ export default class Main_Container extends Container {
 		this.addChild(this._constructorContainer)
 		const windowWidth:number = Global.WINDOW_WIDTH*0.9;
 		const windowHeight:number = Global.WINDOW_HEIGHT*0.9;
-		let newStorageWindowConstructor:Storage_Window_Constructor = new Storage_Window_Constructor(
+		let storageWindowConstructor:Storage_Window_Constructor = new Storage_Window_Constructor(
 			windowWidth,
 			windowHeight,
 			Main_Container.JSON_LOADER.response)
-		newStorageWindowConstructor.x = (Global.WINDOW_WIDTH - windowWidth)/2;
-		newStorageWindowConstructor.y = (Global.WINDOW_HEIGHT - windowHeight)/2;
-		this._constructorContainer.addChild(newStorageWindowConstructor);
+		storageWindowConstructor.x = (Global.WINDOW_WIDTH - windowWidth)/2;
+		storageWindowConstructor.y = (Global.WINDOW_HEIGHT - windowHeight)/2;
+		this._constructorContainer.addChild(storageWindowConstructor);
 
-		let buttonX:number = 120;
-		let buttonY:number = 500;
-		let startButton:Button = new Button(
+		let buttonCreateX:number = 120;
+		let buttonCreateY:number = 500;
+		let buttonCreate:Button = new Button(
 			"Create",
 			() => {this.createDatabaseSection();},
 			80,
 			30);
-		startButton.x = buttonX;
-		startButton.y = buttonY;
-		this._constructorContainer.addChild(startButton);
+		buttonCreate.x = buttonCreateX;
+		buttonCreate.y = buttonCreateY;
+		this._constructorContainer.addChild(buttonCreate);
+
+		let buttonClosed:Button = new Button(
+			"╳",
+			() => {this.startStorageWindows();},
+			25, 25);
+		buttonClosed.x = storageWindowConstructor.x + windowWidth - buttonClosed.width - this._gap;
+		buttonClosed.y = storageWindowConstructor.y + this._gap;
+		this._constructorContainer.addChild(buttonClosed);
 	}
 
 	private createDatabaseSection():void {
@@ -182,16 +190,14 @@ export default class Main_Container extends Container {
 
 		this._level.items.push(newObj);
 		let res = JSON.stringify(this._level);
-
 		Main_Container.JSON_LOADER.open("SET", "base.json", true);
-
 		console.log(res);
 
-		// let blob = new Blob([res], {type: "json"});
-		// let link = document.createElement("a");
-		// link.setAttribute("href", URL.createObjectURL(blob));
-		// link.setAttribute("download", "base.json");
-		// link.click();
+		let blob = new Blob([res], {type: "json"});
+		let link = document.createElement("a");
+		link.setAttribute("href", URL.createObjectURL(blob));
+		link.setAttribute("download", "base.json");
+		link.click();
 
 		this.removeAll();
 		this.createStartMenu(this._textForRestartMenu);
@@ -244,7 +250,6 @@ export default class Main_Container extends Container {
 			}
 
 			textY += 22;
-
 			if (key === "login" || key === "password") {										//create buttons
 				let button:Button = new Button(
 					"copy",

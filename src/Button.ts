@@ -34,6 +34,12 @@ export default class Button extends Container {
             buttonText.y = (button.height - buttonText.height)/2;
         }
 
+        if (buttonName == "╳") {
+            buttonText.y = 1;
+            textStyle.fill = 0x997a8d;
+            textStyle.fontWeight = "Bold"
+        }
+
         button.addChild(buttonText);
 
         if (callback) {
