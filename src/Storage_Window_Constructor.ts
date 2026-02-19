@@ -34,7 +34,7 @@ export default class Storage_Window_Constructor extends Container {
             .drawRect(0, 0, windowWidth, windowHeight);
         this.addChild(storageWindow);
 
-        let textForStorageWindow:Text_Window = new Text_Window(textForWindow, 0x000000, 0, false);
+        let textForStorageWindow:Text_Window = new Text_Window(textForWindow, 0x000000, 0, 0);
         textForStorageWindow.x = gap;
         textForStorageWindow.y = gap;
         this.addChild(textForStorageWindow);

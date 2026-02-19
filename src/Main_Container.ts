@@ -9,8 +9,8 @@ import Global from "./Global";
 import {InteractionEvent, IPoint} from "pixi.js";
 
 export default class Main_Container extends Container {
-	public static JSON_LOADER:XMLHttpRequest;
-	private _level:ILevel;
+	public static OPENED_BASE:object;
+	private _level:object;
 	private _startMenuContainer:PIXI.Container;
 	private _storageWindowsContainer:PIXI.Container;
 	private _constructorContainer:PIXI.Container;
@@ -28,13 +28,19 @@ export default class Main_Container extends Container {
 	}
 
 	private jsonLoader():void {
-		Main_Container.JSON_LOADER = new XMLHttpRequest();
-		Main_Container.JSON_LOADER.responseType = "json";
-		Main_Container.JSON_LOADER.open("GET", "base.json", true);
-		Main_Container.JSON_LOADER.onreadystatechange = () => {
-			this.startStorageWindows();
-		};
-		Main_Container.JSON_LOADER.send();
+		let input = document.createElement('input');
+		input.type = 'file';
+		input.onchange = e => {
+			let file = (e.target as HTMLInputElement).files[0];
+			let reader = new FileReader();
+			reader.readAsText(file,'UTF-8');
+			reader.onload = readerEvent => {
+				Main_Container.OPENED_BASE = JSON.parse(readerEvent.target.result as string);
+				console.log(Object.keys(Main_Container.OPENED_BASE));
+				this.startStorageWindows();
+			}
+		}
+		input.click();
 	}
 
 	private createButton(bX:number, bY:number, bWidth:number, bHeight:number, saveCont:PIXI.Container, callback:any, name:string):void {
@@ -84,7 +90,7 @@ export default class Main_Container extends Container {
 	private startStorageWindows():void {
 		this.removeAll();
 		this._storageWindowsContainer = new PIXI.Container;
-		this._level = Main_Container.JSON_LOADER.response;
+		this._level = Main_Container.OPENED_BASE;
 		this.addChild(this._storageWindowsContainer);
 		this.createStorageWindowsGrid();
 	}
@@ -227,8 +233,7 @@ export default class Main_Container extends Container {
 		);
 
 		this._level.items.push(newObj);
-		let res = JSON.stringify(this._level);
-		Main_Container.JSON_LOADER.open("SET", "base.json", true);
+		let res = JSON.stringify(Main_Container.OPENED_BASE);
 		console.log(res);
 
 		let blob = new Blob([res], {type: "json"});
