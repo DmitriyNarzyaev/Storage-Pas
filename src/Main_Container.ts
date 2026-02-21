@@ -10,6 +10,7 @@ import {InteractionEvent, IPoint} from "pixi.js";
 
 export default class Main_Container extends Container {
 	public static OPENED_BASE:object;
+	private _jsonLoader:XMLHttpRequest;
 	private _level:object;
 	private _startMenuContainer:PIXI.Container;
 	private _storageWindowsContainer:PIXI.Container;
@@ -27,7 +28,7 @@ export default class Main_Container extends Container {
 		this.createStartMenu(this._textForStartMenu);
 	}
 
-	private jsonLoader():void {
+	private openJsonBase():void {
 		let input = document.createElement('input');
 		input.type = 'file';
 		input.onchange = e => {
@@ -41,6 +42,19 @@ export default class Main_Container extends Container {
 			}
 		}
 		input.click();
+	}
+
+	private createJsonBase():void {
+		this._jsonLoader = new XMLHttpRequest();
+		this._jsonLoader.responseType = "json";
+
+		this._jsonLoader.open("GET", "base.json", true);
+		this._jsonLoader.onreadystatechange = () => {
+			Main_Container.OPENED_BASE = this._jsonLoader.response
+			this.startStorageWindows();
+		};
+		this._jsonLoader.send();
+
 	}
 
 	private createButton(bX:number, bY:number, bWidth:number, bHeight:number, saveCont:PIXI.Container, callback:any, name:string):void {
@@ -61,18 +75,27 @@ export default class Main_Container extends Container {
 		let  startMenu:Start_Menu = new Start_Menu(textForStartMenu);
 		this._startMenuContainer.addChild(startMenu);
 
-		let startMenuButtonWidth:number = 80;
-		let startMenuButtonHeight:number = 30;
-		let startMenuButtonX:number = (Global.WINDOW_WIDTH - startMenuButtonWidth) / 2;
-		let startMenuButtonY = (Global.WINDOW_HEIGHT - startMenuButtonHeight) / 1.5;
+		let openButtonWidth:number = 80;
+		let openButtonHeight:number = 30;
+		let openButtonX:number = (Global.WINDOW_WIDTH - openButtonWidth) / 2;
+		let openButtonY = (Global.WINDOW_HEIGHT - openButtonHeight) / 1.5;
 		this.createButton(																								//BUTTON START MENU
-			startMenuButtonX,
-			startMenuButtonY,
-			startMenuButtonWidth,
-			startMenuButtonHeight,
+			openButtonX,
+			openButtonY,
+			openButtonWidth,
+			openButtonHeight,
 			this._startMenuContainer,
-			() => {this.jsonLoader();},
-			"START");
+			() => {this.openJsonBase();},
+			"OPEN");
+
+		this.createButton(																								//BUTTON START MENU
+			openButtonWidth + openButtonX + this._gap,
+			openButtonY,
+			openButtonWidth,
+			openButtonHeight,
+			this._startMenuContainer,
+			() => {this.createJsonBase();},
+			"NEW");
 	}
 
 	private removeAll():void {
