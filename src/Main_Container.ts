@@ -17,6 +17,7 @@ export default class Main_Container extends Container {
 	private _constructorContainer:PIXI.Container;
 	private _gap:number = 10;
 	private _touchDownPoint:IPoint;
+	private _wheelHandler:()=>void;
 	private _textForStartMenu:string ="Password Storage\n\n\nPassword Storage находится в процессе разработки."+
 		"\n\nПри заполнении каждого поля конструктора нажимать клавишу Enter.";
 
@@ -167,7 +168,29 @@ export default class Main_Container extends Container {
 			this._storageWindowsContainer.addListener('pointerdown', this.onDragStart, this);
 			this._storageWindowsContainer.addListener('pointerup', this.onDragEnd, this);
 			this._storageWindowsContainer.addListener('pointerupoutside', this.onDragEnd, this);
+			this._wheelHandler = Main_Container.addEvent(document, "wheel", this.movingContentForWheel.bind(this));
 		}
+	}
+
+	private movingContentForWheel(wheelEvent:WheelEvent):void {
+		const delta:number = 30*(wheelEvent.deltaY > 0 ? 1 : -1);
+		if (wheelEvent.deltaY > 0){
+			this._storageWindowsContainer.y -= Math.abs(delta);
+		} else {
+			this._storageWindowsContainer.y += Math.abs(delta);
+		}
+		this.dragLimits();
+	}
+
+	private static addEvent(object:any, type:string, callback:() => void):() => void {
+		if (object.addEventListener) {
+			object.addEventListener(type, callback, false);
+		} else if (object.attachEvent) {
+			object.attachEvent("on" + type, callback);
+		} else {
+			object["on" + type] = callback;
+		}
+		return callback;
 	}
 
 	private onDragStart(event:InteractionEvent):void {
