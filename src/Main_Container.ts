@@ -11,7 +11,7 @@ import {InteractionEvent, IPoint} from "pixi.js";
 export default class Main_Container extends Container {
 	public static OPENED_BASE:object;
 	private _jsonLoader:XMLHttpRequest;
-	private _level:object;
+	private _level:any;																									//FIXME
 	private _startMenuContainer:PIXI.Container;
 	private _storageWindowsContainer:PIXI.Container;
 	private _constructorContainer:PIXI.Container;
@@ -47,14 +47,12 @@ export default class Main_Container extends Container {
 	private createJsonBase():void {
 		this._jsonLoader = new XMLHttpRequest();
 		this._jsonLoader.responseType = "json";
-
 		this._jsonLoader.open("GET", "base.json", true);
 		this._jsonLoader.onreadystatechange = () => {
 			Main_Container.OPENED_BASE = this._jsonLoader.response
 			this.startStorageWindows();
 		};
 		this._jsonLoader.send();
-
 	}
 
 	private createButton(bX:number, bY:number, bWidth:number, bHeight:number, saveCont:PIXI.Container, callback:any, name:string):void {
@@ -77,7 +75,7 @@ export default class Main_Container extends Container {
 
 		let openButtonWidth:number = 80;
 		let openButtonHeight:number = 30;
-		let openButtonX:number = (Global.WINDOW_WIDTH - openButtonWidth) / 2;
+		let openButtonX:number = (Global.WINDOW_WIDTH - openButtonWidth) / 2 - openButtonWidth;
 		let openButtonY = (Global.WINDOW_HEIGHT - openButtonHeight) / 1.5;
 		this.createButton(																								//BUTTON START MENU
 			openButtonX,
@@ -102,7 +100,6 @@ export default class Main_Container extends Container {
 		this.removeChild(this._startMenuContainer);
 		this.removeChild(this._storageWindowsContainer);
 		this.removeChild(this._constructorContainer);
-
 		Storage_Window_Constructor.dataForTypeRow = "type"
 		Storage_Window_Constructor.dataForURLRow = "url"
 		Storage_Window_Constructor.dataForLoginRow = "login"
@@ -162,6 +159,7 @@ export default class Main_Container extends Container {
 				() => {this.createStorageWindowConstructor();},
 				"CREATE NEW")
 		}
+
 		this.createBackground(backgroundWidth, backgroundHeight);
 
 		if (this._storageWindowsContainer.height > Global.WINDOW_HEIGHT) {
@@ -254,17 +252,15 @@ export default class Main_Container extends Container {
 				description:Storage_Window_Constructor.dataForDescriptionRow
 			}
 		);
-
 		this._level.items.push(newObj);
-		let res = JSON.stringify(Main_Container.OPENED_BASE);
-		console.log(res);
 
+		let res = JSON.stringify(Main_Container.OPENED_BASE);
 		let blob = new Blob([res], {type: "json"});
 		let link = document.createElement("a");
+
 		link.setAttribute("href", URL.createObjectURL(blob));
 		link.setAttribute("download", "base.json");
 		link.click();
-
 		this.removeAll();
 		this.createStartMenu(this._textForRestartMenu);
 	}
@@ -273,6 +269,7 @@ export default class Main_Container extends Container {
 		let backgroundX:number = 0;
 		let backgroundY:number = 0;
 		let background:PIXI.Graphics = new PIXI.Graphics;
+
 		background.beginFill(0xbdb6bf);
 		if (background.width > 0) {																						//FIXME
 			background.lineStyle(2, 0x997a8d);
@@ -285,6 +282,7 @@ export default class Main_Container extends Container {
 
 	private createStorageWindow(windowX:number, windowY:number, windowWidth:number, windowHeight:number, numberOfWindow:number):void {
 		let storageWindow:Storage_Window = new Storage_Window(windowWidth, windowHeight);
+
 		storageWindow.x = windowX;
 		storageWindow.y = windowY;
 		this._storageWindowsContainer.addChild(storageWindow);
@@ -336,9 +334,8 @@ export default class Main_Container extends Container {
 	private copyCode(copyText:string):void {
 		navigator.clipboard.writeText(copyText).then(() => {
 			console.log("copyText: " + copyText);
-		})
-		.catch(error => {
+		}).catch(error => {
 			console.error(`Текст не скопирован ${error}`);
-		})
+		});
 	}
 }

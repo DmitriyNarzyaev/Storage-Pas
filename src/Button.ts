@@ -39,7 +39,6 @@ export default class Button extends Container {
             textStyle.fill = 0x997a8d;
             textStyle.fontWeight = "Bold"
         }
-
         button.addChild(buttonText);
 
         if (callback) {
