@@ -18,6 +18,7 @@ export default class Main_Container extends Container {
 	private _gap:number = 10;
 	private _touchDownPoint:IPoint;
 	private _wheelHandler:()=>void;
+	private _nameOfDatabase:string = "";
 	private _textForStartMenu:string ="Password Storage\n\n\nPassword Storage находится в процессе разработки."+
 		"\n\nПри заполнении каждого поля конструктора нажимать клавишу Enter.";
 
@@ -38,7 +39,9 @@ export default class Main_Container extends Container {
 			reader.readAsText(file,'UTF-8');
 			reader.onload = readerEvent => {
 				Main_Container.OPENED_BASE = JSON.parse(readerEvent.target.result as string);
-				console.log(Object.keys(Main_Container.OPENED_BASE));
+				//console.log(Object.keys(Main_Container.OPENED_BASE));
+				this._nameOfDatabase = file.name.substring(0, file.name.lastIndexOf('.'));
+				//console.log(this._nameOfDatabase);
 				this.startStorageWindows();
 			}
 		}
@@ -117,12 +120,17 @@ export default class Main_Container extends Container {
 	}
 
 	private createStorageWindowsGrid():void {
+		let textForStorageWindow:Text_Window = new Text_Window(this._nameOfDatabase, 0xaa4400, 0, 0);
+		textForStorageWindow.x = 0;
+		textForStorageWindow.y = this._gap;
+		this._storageWindowsContainer.addChild(textForStorageWindow);
+
 		let storageWindowsX:number = this._gap;
-		let storageWindowsY:number = this._gap;
+		let storageWindowsY:number = textForStorageWindow.y + textForStorageWindow.height + this._gap;
 		let storageWindowWidth:number = 300;
 		let storageWindowHeight:number = 180;
 		let backgroundWidth:number = 0;
-		let backgroundHeight:number = storageWindowHeight + this._gap*2;
+		let backgroundHeight:number = storageWindowsY + storageWindowHeight + this._gap;
 		let bgWidthMax:boolean = false;
 
 		if (this._level != null) {
@@ -170,6 +178,8 @@ export default class Main_Container extends Container {
 			this._storageWindowsContainer.addListener('pointerupoutside', this.onDragEnd, this);
 			this._wheelHandler = Main_Container.addEvent(document, "wheel", this.movingContentForWheel.bind(this));
 		}
+
+		textForStorageWindow.x = (this._storageWindowsContainer.width - textForStorageWindow.width) / 2;
 	}
 
 	private movingContentForWheel(wheelEvent:WheelEvent):void {
