@@ -78,7 +78,7 @@ export default class Main_Container extends Container {
 		let openButtonHeight:number = 30;
 		let openButtonX:number = (Global.WINDOW_WIDTH - openButtonWidth) / 2 - openButtonWidth;
 		let openButtonY = (Global.WINDOW_HEIGHT - openButtonHeight) / 1.5;
-		this.createButton(																								//BUTTON START MENU
+		this.createButton(																								//BUTTON OPEN
 			openButtonX,
 			openButtonY,
 			openButtonWidth,
@@ -87,7 +87,7 @@ export default class Main_Container extends Container {
 			() => {this.openJsonBase();},
 			"OPEN");
 
-		this.createButton(																								//BUTTON START MENU
+		this.createButton(																								//BUTTON NEW
 			openButtonWidth + openButtonX + this._gap,
 			openButtonY,
 			openButtonWidth,
@@ -158,7 +158,7 @@ export default class Main_Container extends Container {
 				windowButtonHeight,
 				newStorageWindow,
 				() => {this.createStorageWindowConstructor();},
-				"CREATE NEW")
+				"CREATE NEW");
 		}
 
 		this.createBackground(backgroundWidth, backgroundHeight);
@@ -243,7 +243,7 @@ export default class Main_Container extends Container {
 			buttonCreateHeight,
 			this._constructorContainer,
 			() => {this.createDatabaseSection();},
-			"Create")
+			"Create");
 
 		let buttonWidth:number = 25;
 		let buttonHeight:number = 25;
@@ -256,7 +256,7 @@ export default class Main_Container extends Container {
 			buttonHeight,
 			this._constructorContainer,
 			() => {this.startStorageWindows();},
-			"╳")
+			"╳");
 	}
 
 	private createDatabaseSection():void {
@@ -342,14 +342,17 @@ export default class Main_Container extends Container {
 			let copyButtonY:number = textY - this._gap * 1.8;
 
 			if (key === "login" || key === "password") {																//BUTTON COPY TEXT TO CLIPBOARD
-				this.createButton(
-					copyButtonX,
-					copyButtonY,
-					copyButtonWidth,
-					copyButtonHeight,
-					storageWindow,
-					() => {this.copyCode(data[key] as string);},
-					"copy")
+				if (data[key] != " ") {
+					this.createButton(
+						copyButtonX,
+						copyButtonY,
+						copyButtonWidth,
+						copyButtonHeight,
+						storageWindow,
+						() => {this.copyCode(data[key] as string);},
+						"copy");
+				}
+
 			}
 		});
 	}
