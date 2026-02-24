@@ -19,6 +19,7 @@ export default class Main_Container extends Container {
 	private _touchDownPoint:IPoint;
 	private _wheelHandler:()=>void;
 	private _nameOfDatabase:string = "";
+	private _saveDatabaseName:string = "";
 	private _textForStartMenu:string ="Password Storage\n\n\nPassword Storage находится в процессе разработки."+
 		"\n\nПри заполнении каждого поля конструктора нажимать клавишу Enter.";
 
@@ -41,6 +42,7 @@ export default class Main_Container extends Container {
 				Main_Container.OPENED_BASE = JSON.parse(readerEvent.target.result as string);
 				//console.log(Object.keys(Main_Container.OPENED_BASE));
 				this._nameOfDatabase = file.name.substring(0, file.name.lastIndexOf('.'));
+				this._saveDatabaseName = file.name;
 				//console.log(this._nameOfDatabase);
 				this.startStorageWindows();
 			}
@@ -292,7 +294,7 @@ export default class Main_Container extends Container {
 		let link = document.createElement("a");
 
 		link.setAttribute("href", URL.createObjectURL(blob));
-		link.setAttribute("download", "base.json");
+		link.setAttribute("download", this._saveDatabaseName);
 		link.click();
 		this.removeAll();
 		this.createStartMenu(this._textForRestartMenu);
