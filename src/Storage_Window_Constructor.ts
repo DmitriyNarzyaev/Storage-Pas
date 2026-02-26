@@ -1,5 +1,4 @@
 import Container = PIXI.Container;
-import Text_Window from "./Text_Window";
 // @ts-ignore
 import TextInput from "../node_modules/pixi-text-input/text-input";
 
@@ -24,20 +23,12 @@ export default class Storage_Window_Constructor extends Container {
         WindowCreatorWidth <= 450 ? windowWidth = 450 : windowWidth = WindowCreatorWidth;
         WindowCreatorHeight <= 520 ? windowHeight = 520 : windowHeight = WindowCreatorHeight;
 
-        let textForWindow:string = "Type:\n\n\n\nUrl\n\n\n\nLogin\n\n\n\nPassword\n\n\n\nDescription";
-        let gap:number = 20;
-
         let storageWindow:PIXI.Graphics = new PIXI.Graphics;
         storageWindow
             .beginFill(0xddd6df)
             .lineStyle(2, 0x997a8d)
             .drawRect(0, 0, windowWidth, windowHeight);
         this.addChild(storageWindow);
-
-        let textForStorageWindow:Text_Window = new Text_Window(textForWindow, 0x000000, 0, 0);
-        textForStorageWindow.x = gap;
-        textForStorageWindow.y = gap;
-        this.addChild(textForStorageWindow);
 
         this.textInputWindow(20, 55, Storage_Window_Constructor.dataForTypeRow);
         this.textInputWindow(20, 140, Storage_Window_Constructor.dataForURLRow);

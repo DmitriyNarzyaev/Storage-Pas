@@ -20,8 +20,7 @@ export default class Main_Container extends Container {
 	private _wheelHandler:()=>void;
 	private _nameOfDatabase:string = "";
 	private _saveDatabaseName:string = "Database.json";
-	private _textForStartMenu:string ="Password Storage\n\n\nPassword Storage находится в процессе разработки."+
-		"\n\nПри заполнении каждого поля конструктора нажимать клавишу Enter.";
+	private _textForStartMenu:string ="PASSWORD STORAGE";
 
 	private _textForRestartMenu:string ="Password Storage\n\n\nДанные сохранены. \n"+
 		"Загрузите базу данных заново.";
@@ -81,8 +80,8 @@ export default class Main_Container extends Container {
 
 		let openButtonWidth:number = 80;
 		let openButtonHeight:number = 30;
-		let openButtonX:number = (Global.WINDOW_WIDTH - openButtonWidth) / 2 - openButtonWidth;
-		let openButtonY = (Global.WINDOW_HEIGHT - openButtonHeight) / 1.5;
+		let openButtonX:number = (Global.WINDOW_WIDTH - openButtonWidth) / 2 - openButtonWidth / 2 - this._gap / 2;
+		let openButtonY = (Global.WINDOW_HEIGHT - openButtonHeight) / 2;
 		this.createButton(																								//BUTTON OPEN
 			openButtonX,
 			openButtonY,
