@@ -19,7 +19,7 @@ export default class Main_Container extends Container {
 	private _touchDownPoint:IPoint;
 	private _wheelHandler:()=>void;
 	private _nameOfDatabase:string = "";
-	private _saveDatabaseName:string = "";
+	private _saveDatabaseName:string = "Database.json";
 	private _textForStartMenu:string ="Password Storage\n\n\nPassword Storage находится в процессе разработки."+
 		"\n\nПри заполнении каждого поля конструктора нажимать клавишу Enter.";
 
