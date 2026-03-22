@@ -1,6 +1,7 @@
 import Container = PIXI.Container;
 // @ts-ignore
 import TextInput from "../node_modules/pixi-text-input/text-input";
+import Text_Window from "./Text_Window";
 
 export default class Storage_Window_Constructor extends Container {
     public static dataForTypeRow:string = "type";
@@ -35,6 +36,11 @@ export default class Storage_Window_Constructor extends Container {
         this.textInputWindow(20, 225, Storage_Window_Constructor.dataForLoginRow);
         this.textInputWindow(20, 310, Storage_Window_Constructor.dataForPasswordRow);
         this.textInputWindow(20, 395, Storage_Window_Constructor.dataForDescriptionRow);
+        this.createInputWindowTitle(20, 30, "TYPE");
+        this.createInputWindowTitle(20, 115, "URL");
+        this.createInputWindowTitle(20, 200, "LOGIN");
+        this.createInputWindowTitle(20, 285, "PASSWORD");
+        this.createInputWindowTitle(20, 370, "DESCRIPTION");
     }
 
     private textInputWindow(windowX:number, windowY:number, data:string):void {
@@ -107,5 +113,12 @@ export default class Storage_Window_Constructor extends Container {
             this._dataFinishedMarker5 = marker;
         }
         this._markerIterator ++;
+    }
+
+    private createInputWindowTitle(textX:number, textY:number, titleText:string):void {
+        let inputWindowTitle:Text_Window = new Text_Window(titleText, 0xaa4400, 0, 0);
+        inputWindowTitle.x = textX;
+        inputWindowTitle.y = textY;
+        this.addChild(inputWindowTitle);
     }
 }

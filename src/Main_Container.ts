@@ -35,6 +35,7 @@ export default class Main_Container extends Container {
 		input.type = 'file';
 		input.onchange = e => {
 			let file = (e.target as HTMLInputElement).files[0];
+
 			let reader = new FileReader();
 			reader.readAsText(file,'UTF-8');
 			reader.onload = readerEvent => {
@@ -277,8 +278,7 @@ export default class Main_Container extends Container {
 		if (Storage_Window_Constructor.dataForPasswordRow == "password") {Storage_Window_Constructor.dataForPasswordRow = " "}
 		if (Storage_Window_Constructor.dataForDescriptionRow == "description") {Storage_Window_Constructor.dataForDescriptionRow = " "}
 
-		let newObj:IBlock = (
-			{
+		let newObj:IBlock = ({
 				type:Storage_Window_Constructor.dataForTypeRow,
 				url:Storage_Window_Constructor.dataForURLRow,
 				login:Storage_Window_Constructor.dataForLoginRow,
