@@ -9,7 +9,7 @@ import Global from "./Global";
 import {InteractionEvent, IPoint} from "pixi.js";
 
 export default class Main_Container extends Container {
-	public static OPENED_BASE:object;
+	public static OPENED_BASE:object[];
 	private _jsonLoader:XMLHttpRequest;
 	private _level:any;																									//FIXME
 	private _startMenuContainer:PIXI.Container;
@@ -21,7 +21,6 @@ export default class Main_Container extends Container {
 	private _nameOfDatabase:string = "";
 	private _saveDatabaseName:string = "Database.json";
 	private _textForStartMenu:string ="PASSWORD STORAGE";
-
 	private _textForRestartMenu:string ="Password Storage\n\n\nДанные сохранены. \n"+
 		"Загрузите базу данных заново.";
 
@@ -35,15 +34,12 @@ export default class Main_Container extends Container {
 		input.type = 'file';
 		input.onchange = e => {
 			let file = (e.target as HTMLInputElement).files[0];
-
 			let reader = new FileReader();
 			reader.readAsText(file,'UTF-8');
 			reader.onload = readerEvent => {
 				Main_Container.OPENED_BASE = JSON.parse(readerEvent.target.result as string);
-				//console.log(Object.keys(Main_Container.OPENED_BASE));
 				this._nameOfDatabase = file.name.substring(0, file.name.lastIndexOf('.'));
 				this._saveDatabaseName = file.name;
-				//console.log(this._nameOfDatabase);
 				this.startStorageWindows();
 			}
 		}
@@ -83,6 +79,7 @@ export default class Main_Container extends Container {
 		let openButtonHeight:number = 30;
 		let openButtonX:number = (Global.WINDOW_WIDTH - openButtonWidth) / 2 - openButtonWidth / 2 - this._gap / 2;
 		let openButtonY = (Global.WINDOW_HEIGHT - openButtonHeight) / 2;
+
 		this.createButton(																								//BUTTON OPEN
 			openButtonX,
 			openButtonY,
@@ -117,6 +114,7 @@ export default class Main_Container extends Container {
 		this.removeAll();
 		this._storageWindowsContainer = new PIXI.Container;
 		this._level = Main_Container.OPENED_BASE;
+		console.log(this._level.items.sort(((a:any, b:any) => a.type.localeCompare(b.type))))
 		this.addChild(this._storageWindowsContainer);
 		this.createStorageWindowsGrid();
 	}
