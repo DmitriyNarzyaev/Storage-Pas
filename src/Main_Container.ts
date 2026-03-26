@@ -114,7 +114,7 @@ export default class Main_Container extends Container {
 		this.removeAll();
 		this._storageWindowsContainer = new PIXI.Container;
 		this._level = Main_Container.OPENED_BASE;
-		console.log(this._level.items.sort(((a:any, b:any) => a.type.localeCompare(b.type))))
+		this._level.items.sort((a:any, b:any) => a.type.localeCompare(b.type))
 		this.addChild(this._storageWindowsContainer);
 		this.createStorageWindowsGrid();
 	}
