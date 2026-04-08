@@ -286,6 +286,12 @@ export default class Main_Container extends Container {
 		);
 		this._level.items.push(newObj);
 
+		this.saveJson();
+		this.removeAll();
+		this.createStartMenu(this._textForRestartMenu);
+	}
+
+	private saveJson():void {																							//сохранение json файла на компьютер
 		let res = JSON.stringify(Main_Container.OPENED_BASE);
 		let blob = new Blob([res], {type: "json"});
 		let link = document.createElement("a");
@@ -293,8 +299,6 @@ export default class Main_Container extends Container {
 		link.setAttribute("href", URL.createObjectURL(blob));
 		link.setAttribute("download", this._saveDatabaseName);
 		link.click();
-		this.removeAll();
-		this.createStartMenu(this._textForRestartMenu);
 	}
 
 	private createBackground(backgroundWidth:number, backgroundHeight:number):void {
@@ -334,6 +338,7 @@ export default class Main_Container extends Container {
 			} else {
 				textColor = 0x000000;
 			}
+
 			if (key === "description") {
 				let textForStorageWindow:Text_Window = new Text_Window(data[key], textColor, textWidth, textWidth);
 				textForStorageWindow.x = textX;
@@ -374,13 +379,14 @@ export default class Main_Container extends Container {
 		});
 	}
 
-	private deleteWindow(numberOfWindow:number):void {
-		this._level.items.splice(numberOfWindow, 1)
+	private deleteWindow(numberOfWindow:number):void {																	//функция для кнопки удаления
+		this._level.items.splice(numberOfWindow, 1);
+		this.saveJson();
 		this.removeAll();
 		this.startStorageWindows();
 	}
 
-	private copyCode(copyText:string):void {
+	private copyCode(copyText:string):void {																			//функция для кнопки копирования
 		navigator.clipboard.writeText(copyText).then(() => {
 			console.log("copyText: " + copyText);
 		}).catch(error => {
