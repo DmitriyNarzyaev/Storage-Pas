@@ -29,7 +29,7 @@ export default class Main_Container extends Container {
 		this.createStartMenu(this._textForStartMenu);
 	}
 
-	private openJsonBase():void {
+	private openJsonBase():void {																						//открыть Json
 		let input = document.createElement('input');
 		input.type = 'file';
 		input.onchange = e => {
@@ -46,7 +46,7 @@ export default class Main_Container extends Container {
 		input.click();
 	}
 
-	private createJsonBase():void {
+	private createJsonBase():void {																						//создать Json
 		this._jsonLoader = new XMLHttpRequest();
 		this._jsonLoader.responseType = "json";
 		this._jsonLoader.open("GET", "base.json", true);
@@ -68,7 +68,7 @@ export default class Main_Container extends Container {
 		saveCont.addChild(createButton);
 	}
 
-	private createStartMenu(textForStartMenu:string):void {
+	private createStartMenu(textForStartMenu:string):void {																//стартовое меню
 		this.removeAll();
 		this._startMenuContainer = new PIXI.Container;
 		this.addChild(this._startMenuContainer);
@@ -99,7 +99,7 @@ export default class Main_Container extends Container {
 			"NEW");
 	}
 
-	private removeAll():void {
+	private removeAll():void {																							//удаление всего
 		this.removeChild(this._startMenuContainer);
 		this.removeChild(this._storageWindowsContainer);
 		this.removeChild(this._constructorContainer);
@@ -110,7 +110,7 @@ export default class Main_Container extends Container {
 		Storage_Window_Constructor.dataForDescriptionRow = "description"
 	}
 
-	private startStorageWindows():void {
+	private startStorageWindows():void {																				//создание окон - хранилищ
 		this.removeAll();
 		this._storageWindowsContainer = new PIXI.Container;
 		this._level = Main_Container.OPENED_BASE;
@@ -361,9 +361,23 @@ export default class Main_Container extends Container {
 						() => {this.copyCode(data[key] as string);},
 						"copy");
 				}
-
 			}
+
+			this.createButton(																							//BUTTON CREATE NEW WINDOW
+				windowWidth - copyButtonWidth - this._gap,
+				windowHeight - copyButtonHeight - this._gap,
+				copyButtonWidth,
+				copyButtonHeight,
+				storageWindow,
+				() => {this.deleteWindow(numberOfWindow );},
+				"delete");
 		});
+	}
+
+	private deleteWindow(numberOfWindow:number):void {
+		this._level.items.splice(numberOfWindow, 1)
+		this.removeAll();
+		this.startStorageWindows();
 	}
 
 	private copyCode(copyText:string):void {
