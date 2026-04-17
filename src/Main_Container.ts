@@ -7,6 +7,7 @@ import Storage_Window_Constructor from "./Storage_Window_Constructor";
 import Start_Menu from "./Start_Menu";
 import Global from "./Global";
 import {InteractionEvent, IPoint} from "pixi.js";
+import PopUp_Window from "./PopUp_Window";
 
 export default class Main_Container extends Container {
 	public static OPENED_BASE:object[];
@@ -15,6 +16,7 @@ export default class Main_Container extends Container {
 	private _startMenuContainer:PIXI.Container;
 	private _storageWindowsContainer:PIXI.Container;
 	private _constructorContainer:PIXI.Container;
+	private _popUpContainer:PIXI.Container;
 	private _gap:number = 10;
 	private _touchDownPoint:IPoint;
 	private _wheelHandler:()=>void;
@@ -368,18 +370,72 @@ export default class Main_Container extends Container {
 				}
 			}
 
-			this.createButton(																							//BUTTON CREATE NEW WINDOW
-				windowWidth - copyButtonWidth - this._gap,
-				windowHeight - copyButtonHeight - this._gap,
-				copyButtonWidth,
-				copyButtonHeight,
-				storageWindow,
-				() => {this.deleteWindow(numberOfWindow );},
-				"delete");
-		});
+		this.createButton(																								//BUTTON DELETE WINDOW
+			windowWidth - copyButtonWidth - this._gap,
+			windowHeight - copyButtonHeight - this._gap,
+			copyButtonWidth,
+			copyButtonHeight,
+			storageWindow,
+			() => {this.createDeleteWarningWindow(numberOfWindow);},
+			"delete");
+
+		 });
+	}
+
+	private createDeleteWarningWindow(numberOfWindow:number):void {
+		let deleteWindowWidth:number = 250;
+		let deleteWindowHeight:number = 150;
+		let buttonWidth:number = 64;
+		let buttonHeight:number = 22;
+
+		// if (this._popUpContainer) {
+		// 	this.removeChild(this._popUpContainer);
+		// }
+
+		this.closedDeleteWarningWindow();
+
+		this._popUpContainer = new PIXI.Container;
+		this._popUpContainer.x = (Global.WINDOW_WIDTH - deleteWindowWidth) / 2;
+		this._popUpContainer.y = (Global.WINDOW_HEIGHT - deleteWindowHeight) / 2;
+		this.addChild(this._popUpContainer);
+		let textAboutProgram:string ="Вы уверены что хотите удалить пароль « "
+			+ this._level.items[numberOfWindow].type.toString() + " »?";
+		let dropPanelPositionX:number = 0;
+		let dropPanelPositionY:number = 0;
+		let popUpWindow:PopUp_Window = new PopUp_Window(deleteWindowWidth, deleteWindowHeight, textAboutProgram);
+		popUpWindow.x = dropPanelPositionX;
+		popUpWindow.y = dropPanelPositionY;
+		this._popUpContainer.addChild(popUpWindow);
+
+		this.createButton(																								//BUTTON CONFIRMATION
+			(deleteWindowWidth - buttonWidth)/2 - buttonWidth,
+			deleteWindowHeight - buttonHeight * 1.5,
+			buttonWidth,
+			buttonHeight,
+			this._popUpContainer,
+			() => {this.deleteWindow(numberOfWindow);},
+			"confirm");
+
+		this.createButton(																								//BUTTON CANCELLATION
+			(deleteWindowWidth - buttonWidth)/2 + buttonWidth,
+			deleteWindowHeight - buttonHeight * 1.5,
+			buttonWidth,
+			buttonHeight,
+			this._popUpContainer,
+			() => {this.closedDeleteWarningWindow();},
+			"cancel");
+	}
+
+	private closedDeleteWarningWindow():void {
+		if (this._popUpContainer) {
+			this.removeChild(this._popUpContainer);
+		}
 	}
 
 	private deleteWindow(numberOfWindow:number):void {																	//функция для кнопки удаления
+		if (this._popUpContainer) {
+			this.removeChild(this._popUpContainer);
+		}
 		this._level.items.splice(numberOfWindow, 1);
 		this.saveJson();
 		this.removeAll();

@@ -2,10 +2,11 @@ import Container = PIXI.Container;
 import Text_Window from "./Text_Window";
 import Global from "./Global";
 import Button from "./Button";
+import PopUp_Window from "./PopUp_Window";
 
 export default class Start_Menu extends Container {
     private _TextWindow:Text_Window;
-    private _questionTextContainer:PIXI.Container;
+    private _popUpContainer:PIXI.Container;
 
     constructor(textForStartMenu:string) {
         super();
@@ -47,32 +48,23 @@ export default class Start_Menu extends Container {
     }
 
     private createTextAboutProgram(gapX:number, gapY:number):void {
-        if (this._questionTextContainer) {
-            this.removeChild(this._questionTextContainer);
-            this._questionTextContainer = null
+        if (this._popUpContainer) {
+            this.removeChild(this._popUpContainer);
+            this._popUpContainer = null
         } else {
-            let backgroundWidth:number = 250;
-            let backgroundHeight:number = 150;
-            this._questionTextContainer = new PIXI.Container;
-            this.addChild(this._questionTextContainer);
+            let aboutWindowWidth:number = 250;
+            let aboutWindowHeight:number = 150;
+            this._popUpContainer = new PIXI.Container;
+            this.addChild(this._popUpContainer);
             let textAboutProgram:string =" Password Storage находится в процессе разработки." +
             "\n При работе с конструктором, нажимать кнопку Enter после заполнения каждого поля.";
 
-            let dropPanelPositionX:number = gapX - backgroundWidth;
+            let dropPanelPositionX:number = gapX - aboutWindowWidth;
             let dropPanelPositionY:number = gapY;
-            let background:PIXI.Graphics = new PIXI.Graphics;
-            background.beginFill(0xbdb6bf);
-            background
-                .lineStyle(1, 0x997a8d)
-                .drawRect(0, 0, backgroundWidth, backgroundHeight);
-            background.x = dropPanelPositionX;
-            background.y = dropPanelPositionY;
-            this._questionTextContainer.addChild(background);
-
-            let textAbout = new Text_Window(textAboutProgram, 0x492a3d, 0, backgroundWidth);
-            textAbout.x = dropPanelPositionX;
-            textAbout.y = dropPanelPositionY;
-            this._questionTextContainer.addChild(textAbout);
+            let popUpWindow:PopUp_Window = new PopUp_Window(aboutWindowWidth, aboutWindowHeight, textAboutProgram);
+            popUpWindow.x = dropPanelPositionX;
+            popUpWindow.y = dropPanelPositionY;
+            this._popUpContainer.addChild(popUpWindow);
         }
     }
 }
